@@ -37,11 +37,15 @@
 #include "dma.h"
 #include "usart.h"
 #include "gpio.h"
+#include "unity_fixture.h"
 
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN 0 */
-
+static void RunAllTests(void)
+{
+	RUN_TEST_GROUP(Usart_DMA);
+}
 /* USER CODE END 0 */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,7 +78,7 @@ int main(void)
   MX_USART3_UART_Init();
 
   /* USER CODE BEGIN 2 */
-
+	UnityMain(1, 0, RunAllTests);
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN 3 */

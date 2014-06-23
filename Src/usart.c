@@ -191,6 +191,14 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
   }
 } 
 
+int unity_output_char(int a) 
+{
+	uint8_t chr = a;
+	
+	HAL_UART_Transmit(&huart3, &chr, 1, 10);
+	return a;
+}
+
 /**
   * @}
   */
