@@ -8,4 +8,8 @@ Goal: refactor generated code for usart initialization.
 	declare and initialize a test struct. (copy code from MX_USART2_UART_Init), compilation pass.
 	add test case to test group runner and call group runner in main.c
 4.	Add tool function uart_clock_enabled(), add assertion, test failed.
+5.	recover uart enable in mspinit, failed. 
+	mx_usart2_init commented out in main.c
+	usart_clock_enabled bugs fixed. 
+	Test passed.
 	

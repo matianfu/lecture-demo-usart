@@ -88,7 +88,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
   if(huart->Instance==USART2)
   {
     /* Peripheral clock enable */
-//    __USART2_CLK_ENABLE();
+    __USART2_CLK_ENABLE();
   
     /**USART2 GPIO Configuration    
     PD5     ------> USART2_TX

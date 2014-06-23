@@ -107,13 +107,16 @@ in rcc_ex
 ******************************************************************************/
 bool uart_clock_enabled(USART_TypeDef* uart)
 {
+	uint32_t mask;
+	
 	if (uart == USART1)
 	{
-		return (RCC->AHB2ENR & RCC_APB2ENR_USART1EN) ? true : false;
+		return (RCC->APB2ENR & RCC_APB2ENR_USART1EN) ? true : false;
 	}
 	else if (uart == USART2)
 	{
-		return (RCC->AHB3ENR & RCC_APB1ENR_USART2EN) ? true : false;
+		mask = (RCC->APB1ENR & RCC_APB1ENR_USART2EN);
+		return (RCC->APB1ENR & RCC_APB1ENR_USART2EN) ? true : false;
 	}
 	else if (uart == USART3)
 	{
@@ -125,7 +128,7 @@ bool uart_clock_enabled(USART_TypeDef* uart)
 	}
 	else if (uart == UART5)
 	{
-		return (RCC->APB1ENR & RCC_APB1ENR_UART4EN) ? true : false;
+		return (RCC->APB1ENR & RCC_APB1ENR_UART5EN) ? true : false;
 	}
 	else if (uart == USART6)
 	{
