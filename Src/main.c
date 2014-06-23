@@ -45,6 +45,7 @@
 static void RunAllTests(void)
 {
 	RUN_TEST_GROUP(Usart_DMA);
+	RUN_TEST_GROUP(Usart_DMA_MspInit);
 }
 /* USER CODE END 0 */
 

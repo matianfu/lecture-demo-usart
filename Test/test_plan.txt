@@ -1,4 +1,10 @@
 
 Goal: refactor generated code for usart initialization.
 
-1. Do some analysis. DONE.
+1. 	Do some analysis. DONE.
+2. 	Planing to test HAL_UART_MspInit().
+3. 	The first case says uart clock should be enabled after the function is called.
+	call HAL_UART_MspInit(huart), compilation error.
+	declare and initialize a test struct. (copy code from MX_USART2_UART_Init), compilation pass.
+	add test case to test group runner and call group runner in main.c
+	
