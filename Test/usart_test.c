@@ -94,7 +94,48 @@ UART_HandleTypeDef huart =
 		}
 };
 
+/******************************************************************************
+in rcc
+#define __USART1_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART1EN))
+#define __USART6_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART6EN))
+#define __USART2_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART2EN))
 
+in rcc_ex
+#define __USART3_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART3EN))
+#define __UART4_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART4EN))
+#define __UART5_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART5EN))
+******************************************************************************/
+bool uart_clock_enabled(USART_TypeDef* uart)
+{
+	if (uart == USART1)
+	{
+		return (RCC->AHB2ENR & RCC_APB2ENR_USART1EN) ? true : false;
+	}
+	else if (uart == USART2)
+	{
+		return (RCC->AHB3ENR & RCC_APB1ENR_USART2EN) ? true : false;
+	}
+	else if (uart == USART3)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_USART3EN) ? true : false;
+	}
+	else if (uart == UART4)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_UART4EN) ? true : false;
+	}
+	else if (uart == UART5)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_UART4EN) ? true : false;
+	}
+	else if (uart == USART6)
+	{
+		return (RCC->APB2ENR & RCC_APB2ENR_USART6EN) ? true : false;
+	}
+	else 
+	{
+		assert_param(false);
+	}
+}
 
 /** MspInit test group **/
 
@@ -111,6 +152,7 @@ TEST_TEAR_DOWN(Usart_DMA_MspInit)
 TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
 {
 	HAL_UART_MspInit(&huart);
+	TEST_ASSERT_TRUE(uart_clock_enabled(huart.Instance));
 }
 
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)

@@ -7,4 +7,5 @@ Goal: refactor generated code for usart initialization.
 	call HAL_UART_MspInit(huart), compilation error.
 	declare and initialize a test struct. (copy code from MX_USART2_UART_Init), compilation pass.
 	add test case to test group runner and call group runner in main.c
+4.	Add tool function uart_clock_enabled(), add assertion, test failed.
 	

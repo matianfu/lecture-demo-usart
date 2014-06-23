@@ -167,7 +167,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4107</DriverSelection>
+            <DriverSelection>4103</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>STLink\ST-LINKIII-KEIL_SWO.dll</Flash2>
@@ -343,8 +343,8 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
-            <oTime>0</oTime>
+            <Optim>0</Optim>
+            <oTime>1</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -355,13 +355,13 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <useXO>0</useXO>
             <VariousControls>
               <MiscControls>--C99</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F407xx</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Inc;..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include</IncludePath>
+              <IncludePath>..\..\Inc;..\..\Drivers\STM32F4xx_HAL_Driver\Inc;..\..\Drivers\CMSIS\Include;..\..\Drivers\CMSIS\Device\ST\STM32F4xx\Include;..\..\Unity\src;..\..\Unity\extras\fixture\src</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -518,6 +518,36 @@
               <FileName>stm32f4xx_hal_uart.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Drivers\STM32F4xx_HAL_Driver\Src\stm32f4xx_hal_uart.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Test/Harness</GroupName>
+          <Files>
+            <File>
+              <FileName>unity.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Unity\src\unity.c</FilePath>
+            </File>
+            <File>
+              <FileName>unity_fixture.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Unity\extras\fixture\src\unity_fixture.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Test/Cases</GroupName>
+          <Files>
+            <File>
+              <FileName>usart_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Test\usart_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_plan.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Test\test_plan.txt</FilePath>
             </File>
           </Files>
         </Group>
