@@ -1,0 +1,4 @@
+
+Goal: refactor generated code for usart initialization.
+
+1. Do some analysis. DONE.
