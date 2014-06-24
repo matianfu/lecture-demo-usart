@@ -284,6 +284,21 @@ TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, hdma_usart2_tx.State);
 }
 
+TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
+{
+	HAL_DMA_DeInit(&usart2_tx_dma_handle);
+	hdma_usart2_tx.State = HAL_DMA_STATE_RESET;
+	hdma_usart2_tx.Parent = 0;
+	huart->hdmatx = 0;
+	HAL_UART_MspInit(huart);
+	
+	TEST_ASSERT_NOT_NULL(huart->hdmatx);
+	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_tx, huart->hdmatx);
+	
+	TEST_ASSERT_NOT_NULL(huart->hdmatx->Parent);
+	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmatx->Parent);
+}
+
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
@@ -291,6 +306,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
+	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 }
 
 

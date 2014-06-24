@@ -27,6 +27,7 @@ Goal: refactor generated code for usart initialization.
 12. add test case for rx dma/uart link check, failed.
 13.	enabled rx dma/uart link in production code, test failed. bug found in test assertion. cleared.
 14. add test case for tx dma, test failed, then enable tx dma init in production code, test passed.
+15.	add test case for tx dma/uart link, enabling production code, test passed. 
 
 
 

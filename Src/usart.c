@@ -129,7 +129,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     HAL_DMA_Init(&hdma_usart2_tx);
 
-//    __HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
+		__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
 
     /* Peripheral interrupt init*/
     /* Sets the priority grouping field */
