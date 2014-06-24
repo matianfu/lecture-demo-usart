@@ -144,6 +144,11 @@ static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
 	.Alternate = GPIO_AF7_USART2,
 };
 
+static UART_IrqConfig uart2_irq_config =
+{
+	.irqn = USART2_IRQn,
+};
+
 static UARTEX_HandleTypeDef huartex2 = 
 {
 	.gpiox = GPIOD,
@@ -164,6 +169,8 @@ static UARTEX_HandleTypeDef huartex2 =
 		.hdmatx = &usart2_tx_dma_handle,	/** statically linked **/
 		.hdmarx = &usart2_rx_dma_handle,
 	},
+	
+	.irq_config = &uart2_irq_config,
 };
 
 static UART_HandleTypeDef* huart = &huartex2.huart;

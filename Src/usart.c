@@ -41,7 +41,7 @@
 
 /* USER CODE BEGIN 0 */
 
-static UARTEX_HandleTypeDef huartex2;
+// static UARTEX_HandleTypeDef huartex2;
 
 /* USER CODE END 0 */
 
@@ -140,8 +140,13 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     /* Peripheral interrupt init*/
     /* Sets the priority grouping field */
 //  HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0); should be moved elsewhere, globally.
-		HAL_NVIC_SetPriority(USART2_IRQn, 0, 0);					/**	this should be the parameter and we need a mock. **/
-		HAL_NVIC_EnableIRQ(USART2_IRQn);
+		if (huartex->irq_config) 
+		{
+			HAL_NVIC_SetPriority(huartex->irq_config->irqn, 
+													huartex->irq_config->preempt_priority,
+													huartex->irq_config->sub_priority);					
+			HAL_NVIC_EnableIRQ(huartex->irq_config->irqn);
+		}
   }
   else if(huart->Instance==USART3)
   {

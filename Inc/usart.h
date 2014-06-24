@@ -42,12 +42,21 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
 	 
+typedef struct
+{
+	IRQn_Type irqn;
+	uint32_t preempt_priority;
+	uint32_t sub_priority;
+} UART_IrqConfig;	
+	 
 typedef struct 
 {
 	GPIO_TypeDef* 				gpiox;
 	GPIO_InitTypeDef*			gpio_init;
 	
 	UART_HandleTypeDef 		huart;
+	
+	UART_IrqConfig*				irq_config;
 	
 } UARTEX_HandleTypeDef;
 
