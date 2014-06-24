@@ -97,6 +97,8 @@ static UART_HandleTypeDef uart2 =
 static UART_HandleTypeDef* huart = &uart2;
 
 extern DMA_HandleTypeDef hdma_usart2_rx;
+extern DMA_HandleTypeDef hdma_usart2_tx;
+
 static DMA_HandleTypeDef usart2_rx_dma_handle =
 {
 	.Instance = DMA1_Stream5,
@@ -112,6 +114,23 @@ static DMA_HandleTypeDef usart2_rx_dma_handle =
     .Priority = DMA_PRIORITY_LOW,
     .FIFOMode = DMA_FIFOMODE_DISABLE,
 	}
+};
+
+static DMA_HandleTypeDef usart2_tx_dma_handle = 
+{
+    .Instance = DMA1_Stream6,
+    .Init = 
+			{
+				.Channel = DMA_CHANNEL_4,
+				.Direction = DMA_MEMORY_TO_PERIPH,
+				.PeriphInc = DMA_PINC_DISABLE,
+				.MemInc = DMA_MINC_ENABLE,
+				.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
+				.MemDataAlignment = DMA_MDATAALIGN_BYTE,
+				.Mode = DMA_NORMAL,
+				.Priority = DMA_PRIORITY_LOW,
+				.FIFOMode = DMA_FIFOMODE_DISABLE,
+			}
 };
 
 /******************************************************************************
@@ -257,12 +276,21 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
 	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmarx->Parent);
 }
 
+TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
+{
+	HAL_DMA_DeInit(&usart2_tx_dma_handle);
+	hdma_usart2_tx.State = HAL_DMA_STATE_RESET;
+	HAL_UART_MspInit(huart);
+	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, hdma_usart2_tx.State);
+}
+
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
+	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 }
 
 
