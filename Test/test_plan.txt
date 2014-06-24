@@ -39,6 +39,7 @@ Goal: refactor generated code for usart initialization.
 	and lets go, do container_of trick.
 20. add uartex_handletypedef struct and initialized object (for test.)
 21. gpio_init inside mspinit refactored, test passed.
+22. use static instance to substitute global dma rx init, two tests failed.
 
 
 

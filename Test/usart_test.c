@@ -97,6 +97,8 @@ static UART_HandleTypeDef uart2 =
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart2_tx;
 
+static UARTEX_HandleTypeDef huartex2;
+
 static DMA_HandleTypeDef usart2_rx_dma_handle =
 {
 	.Instance = DMA1_Stream5,
@@ -111,24 +113,26 @@ static DMA_HandleTypeDef usart2_rx_dma_handle =
     .Mode = DMA_NORMAL,
     .Priority = DMA_PRIORITY_LOW,
     .FIFOMode = DMA_FIFOMODE_DISABLE,
-	}
+	},
+	.Parent = &huartex2.huart,	/* statically linked */
 };
 
 static DMA_HandleTypeDef usart2_tx_dma_handle = 
 {
-    .Instance = DMA1_Stream6,
-    .Init = 
-			{
-				.Channel = DMA_CHANNEL_4,
-				.Direction = DMA_MEMORY_TO_PERIPH,
-				.PeriphInc = DMA_PINC_DISABLE,
-				.MemInc = DMA_MINC_ENABLE,
-				.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
-				.MemDataAlignment = DMA_MDATAALIGN_BYTE,
-				.Mode = DMA_NORMAL,
-				.Priority = DMA_PRIORITY_LOW,
-				.FIFOMode = DMA_FIFOMODE_DISABLE,
-			}
+	.Instance = DMA1_Stream6,
+	.Init = 
+		{
+			.Channel = DMA_CHANNEL_4,
+			.Direction = DMA_MEMORY_TO_PERIPH,
+			.PeriphInc = DMA_PINC_DISABLE,
+			.MemInc = DMA_MINC_ENABLE,
+			.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
+			.MemDataAlignment = DMA_MDATAALIGN_BYTE,
+			.Mode = DMA_NORMAL,
+			.Priority = DMA_PRIORITY_LOW,
+			.FIFOMode = DMA_FIFOMODE_DISABLE,
+		},
+	.Parent = &huartex2.huart,	/* statically linked */
 };
 
 static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
@@ -157,6 +161,8 @@ static UARTEX_HandleTypeDef huartex2 =
 			.HwFlowCtl = UART_HWCONTROL_NONE,
 			.OverSampling = UART_OVERSAMPLING_16,
 		},
+		.hdmatx = &usart2_tx_dma_handle,
+		.hdmarx = &usart2_tx_dma_handle,
 	},
 };
 
