@@ -37,6 +37,7 @@ Goal: refactor generated code for usart initialization.
 	c) SetPriorityGroup not neccessary.
 	d) irq parameter should not be hard coded.
 	and lets go, do container_of trick.
+20. add uartex_handletypedef struct, 
 
 
 

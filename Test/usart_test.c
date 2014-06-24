@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include "stm32f4xx_hal.h"
 #include "unity_fixture.h"
+#include "usart.h"
 
 /******************************************************************************
 
@@ -78,7 +79,6 @@ Deinit Assertion:
 	
 ******************************************************************************/	
 
-
 static UART_HandleTypeDef uart2 =
 {
 	.Instance = USART2,
@@ -91,10 +91,8 @@ static UART_HandleTypeDef uart2 =
 			.Mode = UART_MODE_TX_RX,
 			.HwFlowCtl = UART_HWCONTROL_NONE,
 			.OverSampling = UART_OVERSAMPLING_16
-		}
+		},
 };
-
-static UART_HandleTypeDef* huart = &uart2;
 
 extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart2_tx;
@@ -132,6 +130,37 @@ static DMA_HandleTypeDef usart2_tx_dma_handle =
 				.FIFOMode = DMA_FIFOMODE_DISABLE,
 			}
 };
+
+static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
+{
+	.Pin = GPIO_PIN_5|GPIO_PIN_6,
+	.Mode = GPIO_MODE_AF_PP,
+	.Pull = GPIO_NOPULL,
+	.Speed = GPIO_SPEED_LOW,
+	.Alternate = GPIO_AF7_USART2,
+};
+
+static UARTEX_HandleTypeDef huartex2 = 
+{
+	.gpiox = GPIOD,
+	.gpio_init = &gpio_init_usart2_pd5_pd6,
+	.huart = 
+	{
+		.Instance = USART2,
+		.Init = 
+		{
+			.BaudRate = 115200,
+			.WordLength = UART_WORDLENGTH_8B,
+			.StopBits = UART_STOPBITS_1,
+			.Parity = UART_PARITY_NONE,
+			.Mode = UART_MODE_TX_RX,
+			.HwFlowCtl = UART_HWCONTROL_NONE,
+			.OverSampling = UART_OVERSAMPLING_16,
+		},
+	},
+};
+
+static UART_HandleTypeDef* huart = &uart2;
 
 /******************************************************************************
 in rcc

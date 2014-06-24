@@ -41,6 +41,8 @@
 
 /* USER CODE BEGIN 0 */
 
+static UARTEX_HandleTypeDef huartex2;
+
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart2;

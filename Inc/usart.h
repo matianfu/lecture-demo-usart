@@ -41,9 +41,17 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+	 
+typedef struct 
+{
+	GPIO_TypeDef* 				gpiox;
+	GPIO_InitTypeDef*			gpio_init;
+	
+	UART_HandleTypeDef 		huart;
+	
+} UARTEX_HandleTypeDef;
 
-extern UART_HandleTypeDef huart2;
-extern UART_HandleTypeDef huart3;
+
 
 void MX_USART2_UART_Init(void);
 void MX_USART3_UART_Init(void);
