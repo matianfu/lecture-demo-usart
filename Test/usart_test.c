@@ -242,11 +242,27 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, hdma_usart2_rx.State);
 }
 
+TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
+{
+	HAL_DMA_DeInit(&usart2_rx_dma_handle);
+	hdma_usart2_rx.State = HAL_DMA_STATE_RESET;
+	hdma_usart2_rx.Parent = 0;
+	huart->hdmarx = 0;
+	HAL_UART_MspInit(huart);
+	
+	TEST_ASSERT_NOT_NULL(huart->hdmarx);
+	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_rx, huart->hdmarx);
+	
+	TEST_ASSERT_NOT_NULL(huart->hdmarx->Parent);
+	TEST_ASSERT_EQUAL_HEX32(&huart, huart->hdmarx->Parent);
+}
+
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
+	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 }
 
 
