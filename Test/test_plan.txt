@@ -22,4 +22,12 @@ Goal: refactor generated code for usart initialization.
 9.	Before enabling GPIO init in production code. add a test case, assert in a tricky way. rename the test case. 
 	GpioShouldBeConfigured renamed to GpioShouldBeNonInput, partial test because we trust the code.
 	Test and fail.
-10.	
+10.	Add test case for rx dma, the globals are duplicated, as well as extern-ed. dirty. test and fail.
+
+
+
+Pending: 
+1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.
+2. we don't like the way dma globals are used in mspinit. not good for test.
+
+
