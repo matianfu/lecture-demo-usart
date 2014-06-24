@@ -254,7 +254,7 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
 	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_rx, huart->hdmarx);
 	
 	TEST_ASSERT_NOT_NULL(huart->hdmarx->Parent);
-	TEST_ASSERT_EQUAL_HEX32(&huart, huart->hdmarx->Parent);
+	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmarx->Parent);
 }
 
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)

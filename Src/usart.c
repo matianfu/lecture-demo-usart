@@ -115,7 +115,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     hdma_usart2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
     HAL_DMA_Init(&hdma_usart2_rx);
 
-//    __HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
+		__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
 
 //    hdma_usart2_tx.Instance = DMA1_Stream6;
 //    hdma_usart2_tx.Init.Channel = DMA_CHANNEL_4;

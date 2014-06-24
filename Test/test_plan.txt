@@ -25,6 +25,7 @@ Goal: refactor generated code for usart initialization.
 10.	Add test case for rx dma, the globals are duplicated, as well as extern-ed. dirty. test and fail.
 11. enabled rx dma and passed.
 12. add test case for rx dma/uart link check, failed.
+13.	enabled rx dma/uart link in production code, test failed. bug found in test assertion. cleared.
 
 
 
