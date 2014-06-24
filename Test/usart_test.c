@@ -224,6 +224,15 @@ bool gpio_modes_all_noninput(GPIO_TypeDef* gpiox, uint32_t pins)
 	return true;
 }
 
+bool irq_enabled(IRQn_Type IRQn) 
+{
+	uint32_t reg;
+	
+	/** or NVIC->ISER[(uint32_t)((int32_t)IRQn) >> 5]; **/
+	reg = NVIC->ISER[(uint32_t)((int32_t)IRQn) >> 5];
+	return (reg & (1 << ((uint32_t)(IRQn) & 0x1F))) ? true : false;
+}
+
 /** MspInit test group **/
 
 TEST_GROUP(Usart_DMA_MspInit);
@@ -299,6 +308,13 @@ TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
 	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmatx->Parent);
 }
 
+TEST(Usart_DMA_MspInit, IRQEnabled)
+{
+	HAL_NVIC_DisableIRQ(USART2_IRQn);
+	HAL_UART_MspInit(huart);
+	TEST_ASSERT_TRUE(irq_enabled(USART2_IRQn));
+}
+
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
@@ -307,6 +323,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
+	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
 }
 
 

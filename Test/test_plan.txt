@@ -30,6 +30,7 @@ Goal: refactor generated code for usart initialization.
 15.	add test case for tx dma/uart link, enabling production code, test passed.
 16. in this step, we add a task to pending list, move SetPriorityGroup elsewhere.
 17. in this step, we add a task to pending list, we think the priority should be parameterized.
+18. add test case for irq enable. passed.
 
 
 
