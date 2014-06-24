@@ -22,3 +22,4 @@ Goal: refactor generated code for usart initialization.
 9.	Before enabling GPIO init in production code. add a test case, assert in a tricky way. rename the test case. 
 	GpioShouldBeConfigured renamed to GpioShouldBeNonInput, partial test because we trust the code.
 	Test and fail.
+10.	
