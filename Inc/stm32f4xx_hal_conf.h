@@ -391,6 +391,17 @@
   #define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */    
 
+/******************************************************************************	
+	
+#define container_of(ptr, type, member) ({                      \
+        const typeof( ((type *)0)->member ) *__mptr = (ptr);    \
+        (type *)( (char *)__mptr - offsetof(type,member) );})		
+
+neither typeof keyword nor code block evaluatio are supported by armcc, 
+so we can only have the TYPE UNSAFE version of the famous container_of macro 
+******************************************************************************/
+#define container_of(ptr, type, member) ( (type *)( (char *)ptr - offsetof(type,member) ))	
+
 #ifdef __cplusplus
 }
 #endif

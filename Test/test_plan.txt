@@ -31,6 +31,12 @@ Goal: refactor generated code for usart initialization.
 16. in this step, we add a task to pending list, move SetPriorityGroup elsewhere.
 17. in this step, we add a task to pending list, we think the priority should be parameterized.
 18. add test case for irq enable. passed.
+19. Do a summary
+	a) gpio_init struct should be parameterized.
+	b) dma init should be parameterized.
+	c) SetPriorityGroup not neccessary.
+	d) irq parameter should not be hard coded.
+	and lets go, do container_of trick.
 
 
 
