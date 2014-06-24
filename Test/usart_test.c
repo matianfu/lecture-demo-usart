@@ -160,7 +160,7 @@ static UARTEX_HandleTypeDef huartex2 =
 	},
 };
 
-static UART_HandleTypeDef* huart = &uart2;
+static UART_HandleTypeDef* huart = &huartex2.huart;
 
 /******************************************************************************
 in rcc
