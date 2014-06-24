@@ -29,6 +29,7 @@ Goal: refactor generated code for usart initialization.
 14. add test case for tx dma, test failed, then enable tx dma init in production code, test passed.
 15.	add test case for tx dma/uart link, enabling production code, test passed.
 16. in this step, we add a task to pending list, move SetPriorityGroup elsewhere.
+17. in this step, we add a task to pending list, we think the priority should be parameterized.
 
 
 
@@ -36,5 +37,7 @@ Pending:
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.
 2. we don't like the way dma globals are used in mspinit. not good for test.
 3. move SetPriorityGroup out of hal_uart_mspinit.
+4. add a test case to mspinit with parameterized priority.
+
 
 
