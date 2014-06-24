@@ -41,6 +41,7 @@ Goal: refactor generated code for usart initialization.
 21. gpio_init inside mspinit refactored, test passed.
 22. use static instance to substitute global dma rx init, two tests failed.
 23. typo bug, cleared. one test case obsolete.
+24. use static instance to substitute global dma tx init, one case obsolete. passed.
 
 
 

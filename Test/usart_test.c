@@ -95,7 +95,7 @@ static UART_HandleTypeDef uart2 =
 };
 
 // extern DMA_HandleTypeDef hdma_usart2_rx;
-extern DMA_HandleTypeDef hdma_usart2_tx;
+// extern DMA_HandleTypeDef hdma_usart2_tx;
 
 static UARTEX_HandleTypeDef huartex2;
 
@@ -161,7 +161,7 @@ static UARTEX_HandleTypeDef huartex2 =
 			.HwFlowCtl = UART_HWCONTROL_NONE,
 			.OverSampling = UART_OVERSAMPLING_16,
 		},
-		// .hdmatx = &usart2_tx_dma_handle,
+		.hdmatx = &usart2_tx_dma_handle,	/** statically linked **/
 		.hdmarx = &usart2_rx_dma_handle,
 	},
 };
@@ -247,7 +247,7 @@ bool uart_clock_enabled(USART_TypeDef* uart)
 
 bool gpio_modes_all_noninput(GPIO_TypeDef* gpiox, uint32_t pins)
 {
-	uint32_t pos, mask;
+	uint32_t pos; /**  mask; **/
 	for (pos = 0; pos < 16; pos++)
 	{
 		if (((uint32_t)1 << pos) & pins)
@@ -324,25 +324,26 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 {
 	HAL_DMA_DeInit(&usart2_tx_dma_handle);
-	hdma_usart2_tx.State = HAL_DMA_STATE_RESET;
+	usart2_tx_dma_handle.State = HAL_DMA_STATE_RESET;
 	HAL_UART_MspInit(huart);
-	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, hdma_usart2_tx.State);
+	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_tx_dma_handle.State);
 }
 
-TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
-{
-	HAL_DMA_DeInit(&usart2_tx_dma_handle);
-	hdma_usart2_tx.State = HAL_DMA_STATE_RESET;
-	hdma_usart2_tx.Parent = 0;
-	huart->hdmatx = 0;
-	HAL_UART_MspInit(huart);
-	
-	TEST_ASSERT_NOT_NULL(huart->hdmatx);
-	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_tx, huart->hdmatx);
-	
-	TEST_ASSERT_NOT_NULL(huart->hdmatx->Parent);
-	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmatx->Parent);
-}
+/** obsolete case **/
+//TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
+//{
+//	HAL_DMA_DeInit(&usart2_tx_dma_handle);
+//	hdma_usart2_tx.State = HAL_DMA_STATE_RESET;
+//	hdma_usart2_tx.Parent = 0;
+//	huart->hdmatx = 0;
+//	HAL_UART_MspInit(huart);
+//	
+//	TEST_ASSERT_NOT_NULL(huart->hdmatx);
+//	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_tx, huart->hdmatx);
+//	
+//	TEST_ASSERT_NOT_NULL(huart->hdmatx->Parent);
+//	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmatx->Parent);
+//}
 
 TEST(Usart_DMA_MspInit, IRQEnabled)
 {
@@ -358,7 +359,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
-	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
+//	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
 }
 
