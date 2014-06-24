@@ -94,7 +94,7 @@ static UART_HandleTypeDef uart2 =
 		},
 };
 
-extern DMA_HandleTypeDef hdma_usart2_rx;
+// extern DMA_HandleTypeDef hdma_usart2_rx;
 extern DMA_HandleTypeDef hdma_usart2_tx;
 
 static UARTEX_HandleTypeDef huartex2;
@@ -161,8 +161,8 @@ static UARTEX_HandleTypeDef huartex2 =
 			.HwFlowCtl = UART_HWCONTROL_NONE,
 			.OverSampling = UART_OVERSAMPLING_16,
 		},
-		.hdmatx = &usart2_tx_dma_handle,
-		.hdmarx = &usart2_tx_dma_handle,
+		// .hdmatx = &usart2_tx_dma_handle,
+		.hdmarx = &usart2_rx_dma_handle,
 	},
 };
 
@@ -300,25 +300,26 @@ TEST(Usart_DMA_MspInit, GpioShouldBeNonInput)
 TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 {
 	HAL_DMA_DeInit(&usart2_rx_dma_handle);
-	hdma_usart2_rx.State = HAL_DMA_STATE_RESET;
+	usart2_rx_dma_handle.State = HAL_DMA_STATE_RESET;
 	HAL_UART_MspInit(huart);
-	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, hdma_usart2_rx.State);
+	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_rx_dma_handle.State);
 }
 
-TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
-{
-	HAL_DMA_DeInit(&usart2_rx_dma_handle);
-	hdma_usart2_rx.State = HAL_DMA_STATE_RESET;
-	hdma_usart2_rx.Parent = 0;
-	huart->hdmarx = 0;
-	HAL_UART_MspInit(huart);
-	
-	TEST_ASSERT_NOT_NULL(huart->hdmarx);
-	TEST_ASSERT_EQUAL_HEX32(&hdma_usart2_rx, huart->hdmarx);
-	
-	TEST_ASSERT_NOT_NULL(huart->hdmarx->Parent);
-	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmarx->Parent);
-}
+/** this case is obsolete **/
+//TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
+//{
+//	HAL_DMA_DeInit(&usart2_rx_dma_handle);
+//	usart2_rx_dma_handle.State = HAL_DMA_STATE_RESET;
+//	usart2_rx_dma_handle.Parent = 0;
+
+//	HAL_UART_MspInit(huart);
+//	
+//	TEST_ASSERT_NOT_NULL(huart->hdmarx);
+//	TEST_ASSERT_EQUAL_HEX32(&usart2_rx_dma_handle, huart->hdmarx);
+//	
+//	TEST_ASSERT_NOT_NULL(huart->hdmarx->Parent);
+//	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmarx->Parent);
+//}
 
 TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 {
@@ -355,7 +356,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
-	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
+//	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
