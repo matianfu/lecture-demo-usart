@@ -12,4 +12,9 @@ Goal: refactor generated code for usart initialization.
 	mx_usart2_init commented out in main.c
 	usart_clock_enabled bugs fixed. 
 	Test passed.
-	
+6.	Now i want to add gpio init, but wait, what about the setup and teardown? for the sake of independent and repeatable.
+	If we do UartClockShouldBeEnabled multiple times, though all tests should pass, they are not in the right context we expect.
+	We want set up the 'clear' stage, what we mean by clear? no clock, no gpio, no dma, no irq, no uart. Good. but should we go
+	that far now? I think not. we can simply disable the clock. Maybe sometime we will move the code to setup, or encapsulate, whatever,
+	refactor maybe, but now a simple __USART2_CLK_DISABLE as the BUILD is enough. build and test pass.
+7.	A little refactor. add a function in test file, uart_clock_disable(). do replacement, build and test pass.
