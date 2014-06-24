@@ -79,7 +79,7 @@ Deinit Assertion:
 ******************************************************************************/	
 
 
-UART_HandleTypeDef huart =
+static UART_HandleTypeDef uart2 =
 {
 	.Instance = USART2,
 	.Init = 
@@ -93,6 +93,8 @@ UART_HandleTypeDef huart =
 			.OverSampling = UART_OVERSAMPLING_16
 		}
 };
+
+static UART_HandleTypeDef* huart = &uart2;
 
 /******************************************************************************
 in rcc
@@ -167,6 +169,22 @@ bool uart_clock_enabled(USART_TypeDef* uart)
 	{
 		assert_param(false);
 	}
+	
+	return false;
+}
+
+bool gpio_modes_all_noninput(GPIO_TypeDef* gpiox, uint32_t pins)
+{
+	uint32_t pos, mask;
+	for (pos = 0; pos < 16; pos++)
+	{
+		if (((uint32_t)1 << pos) & pins)
+		{
+			if ((gpiox->MODER & (GPIO_MODER_MODER0 << (pos * 2))) == 0)
+				return false;
+		}
+	}
+	return true;
 }
 
 /** MspInit test group **/
@@ -183,14 +201,25 @@ TEST_TEAR_DOWN(Usart_DMA_MspInit)
 
 TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
 {
-	uart_clock_disable(huart.Instance);
-	HAL_UART_MspInit(&huart);
-	TEST_ASSERT_TRUE(uart_clock_enabled(huart.Instance));
+	uart_clock_disable(huart->Instance);
+	HAL_UART_MspInit(huart);
+	TEST_ASSERT_TRUE(uart_clock_enabled(huart->Instance));
+}
+
+/** don't use the misleading name, such as "GpioShouldeBeConfigured", since we do NOT fully test the gpio configuration. **/
+/** we don't do fully test because we trust the code, we just make sure the function is called. **/
+TEST(Usart_DMA_MspInit, GpioShouldBeNonInput)
+{
+	uint32_t pins = GPIO_PIN_5|GPIO_PIN_6;
+	HAL_GPIO_DeInit(GPIOD, pins);
+	HAL_UART_MspInit(huart);
+	TEST_ASSERT_TRUE(gpio_modes_all_noninput(GPIOD, pins));
 }
 
 TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
+	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 }
 
 /*****************************************************************************/

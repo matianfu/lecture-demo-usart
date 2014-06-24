@@ -18,3 +18,7 @@ Goal: refactor generated code for usart initialization.
 	that far now? I think not. we can simply disable the clock. Maybe sometime we will move the code to setup, or encapsulate, whatever,
 	refactor maybe, but now a simple __USART2_CLK_DISABLE as the BUILD is enough. build and test pass.
 7.	A little refactor. add a function in test file, uart_clock_disable(). do replacement, build and test pass.
+8.	A little more refactor. use pointer other than struct/object.
+9.	Before enabling GPIO init in production code. add a test case, assert in a tricky way. rename the test case. 
+	GpioShouldBeConfigured renamed to GpioShouldBeNonInput, partial test because we trust the code.
+	Test and fail.
