@@ -63,7 +63,7 @@ typedef struct
 
 
 
-void MX_USART2_UART_Init(void);
+void MX_USART_UART_Init(UART_HandleTypeDef* huart);
 void MX_USART3_UART_Init(void);
 
 /** utility **/

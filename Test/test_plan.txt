@@ -58,7 +58,7 @@ Goal: refactor generated code for usart initialization.
 	surprisingly, it passed ANYWAY.
 	best practice: (1) using assert_parameter; (2) change it.
 30. gpio_init test case updated. minor.
-
+31. mx_usart2_uart_init refactored.
 
 
 Pending: 

@@ -362,9 +362,10 @@ extern UART_HandleTypeDef huart2;
 	
 TEST(Usart_DMA, MX_USART_UART_Init)
 {
-	huart2.State = HAL_UART_STATE_RESET;
-	MX_USART2_UART_Init();
-	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, huart2.State);
+	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
+	h->State = HAL_UART_STATE_RESET;
+	MX_USART_UART_Init(h);
+	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, h->State);
 }
 
 /**
