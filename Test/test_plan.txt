@@ -63,6 +63,7 @@ Goal: refactor generated code for usart initialization.
 33. replace usart2 globals with new globals with designated initializer. move isr code to usart.c. test passed.
 34. now we have using usart2 to work like usart3 and all test case passed. it's time to merge usart2/usart3 code in mspinit.
 	oh, wait, first add new globals for usart3, replace init code in MX_USART3_UART_Init, test passed.
+35.	refactor gpio init code inside mspinit for usart3. test passed.
 
 
 
