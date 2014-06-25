@@ -48,7 +48,7 @@ typedef struct
 	IRQn_Type irqn;
 	uint32_t preempt_priority;
 	uint32_t sub_priority;
-} UART_IrqConfig;	
+} IRQ_ConfigTypeDef;	
 	 
 typedef struct 
 {
@@ -57,7 +57,9 @@ typedef struct
 	
 	UART_HandleTypeDef 		huart;
 	
-	UART_IrqConfig*				irq_config;
+	IRQ_ConfigTypeDef*		dmarx_irq_config;
+	IRQ_ConfigTypeDef*		dmatx_irq_config;
+	IRQ_ConfigTypeDef*		uart_irq_config;
 	
 } UARTEX_HandleTypeDef;
 

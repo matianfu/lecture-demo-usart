@@ -118,6 +118,11 @@ static DMA_HandleTypeDef usart2_rx_dma_handle =
 	.Parent = &huartex2.huart,	/* statically linked */
 };
 
+static IRQ_ConfigTypeDef dmarx_irq_config = 
+{
+	.irqn = DMA1_Stream5_IRQn,
+};
+
 static DMA_HandleTypeDef usart2_tx_dma_handle = 
 {
 	.Instance = DMA1_Stream6,
@@ -136,6 +141,11 @@ static DMA_HandleTypeDef usart2_tx_dma_handle =
 	.Parent = &huartex2.huart,	/* statically linked */
 };
 
+static IRQ_ConfigTypeDef dmatx_irq_config =
+{
+	.irqn = DMA1_Stream6_IRQn,
+};
+
 static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
 {
 	.Pin = GPIO_PIN_5|GPIO_PIN_6,
@@ -145,10 +155,13 @@ static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
 	.Alternate = GPIO_AF7_USART2,
 };
 
-static UART_IrqConfig uart2_irq_config =
+static IRQ_ConfigTypeDef uart2_irq_config =
 {
 	.irqn = USART2_IRQn,
 };
+
+
+	
 
 static UARTEX_HandleTypeDef huartex2_pd5_pd6 = 
 {
@@ -192,7 +205,9 @@ static UARTEX_HandleTypeDef huartex2 =
 		.hdmarx = &usart2_rx_dma_handle,
 	},
 	
-	.irq_config = &uart2_irq_config,
+	.dmarx_irq_config = &dmarx_irq_config,
+	.dmatx_irq_config = &dmatx_irq_config,
+	.uart_irq_config = &uart2_irq_config,
 };
 
 static UART_HandleTypeDef* huart = &huartex2.huart;
@@ -271,6 +286,13 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_rx_dma_handle.State);
 }
 
+TEST(Usart_DMA_MspInit, RxDMAIRQShouldeBeEnabled)
+{
+	HAL_NVIC_DisableIRQ(huartex2.dmarx_irq_config->irqn);
+	HAL_UART_MspInit(&huartex2.huart);
+	TEST_ASSERT_TRUE(irq_enabled(huartex2.dmarx_irq_config->irqn));
+}
+
 /** this case is obsolete 
 //TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
 //{
@@ -326,12 +348,11 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
+	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAIRQShouldeBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
 }
-
-
 
 /*****************************************************************************/
 

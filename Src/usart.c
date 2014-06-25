@@ -90,7 +90,7 @@ static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
 	.Alternate = GPIO_AF7_USART2,
 };
 
-static UART_IrqConfig uart2_irq_config =
+static IRQ_ConfigTypeDef uart2_irq_config =
 {
 	.irqn = USART2_IRQn,
 };
@@ -116,7 +116,7 @@ static UARTEX_HandleTypeDef huartex2 =
 		.hdmatx = &hdma_usart2_tx,
 	},
 	
-	.irq_config = &uart2_irq_config,
+	.uart_irq_config = &uart2_irq_config,
 };
 
 
@@ -194,12 +194,12 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 //	__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
 
 	/* Peripheral interrupt init*/
-	if (huartex->irq_config) 
+	if (huartex->uart_irq_config) 
 	{
-		HAL_NVIC_SetPriority(	huartex->irq_config->irqn, 
-													huartex->irq_config->preempt_priority,
-													huartex->irq_config->sub_priority);					
-		HAL_NVIC_EnableIRQ(huartex->irq_config->irqn);
+		HAL_NVIC_SetPriority(	huartex->uart_irq_config->irqn, 
+													huartex->uart_irq_config->preempt_priority,
+													huartex->uart_irq_config->sub_priority);					
+		HAL_NVIC_EnableIRQ(huartex->uart_irq_config->irqn);
 	}
 }
 

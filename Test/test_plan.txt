@@ -65,7 +65,10 @@ Goal: refactor generated code for usart initialization.
 	oh, wait, first add new globals for usart3, replace init code in MX_USART3_UART_Init, test passed.
 35.	refactor gpio init code inside mspinit for usart3. test passed.
 36. merge merge merge.
-37. 
+37. clean
+38. UART_IrqConfig -> IRQ_ConfigTypeDef.
+	add two field into UARTEX_HandleTypeDef for dma irq config. add one test case. failed.
+	
 
 
 Pending: 
