@@ -50,6 +50,8 @@ UART_HandleTypeDef huart3;
 DMA_HandleTypeDef hdma_usart2_rx;
 DMA_HandleTypeDef hdma_usart2_tx;
 
+
+
 /* USART2 init function */
 
 void MX_USART2_UART_Init(void)
@@ -97,11 +99,18 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_GPIO_Init(huartex->gpiox, huartex->gpio_init);
 
     /* Peripheral DMA init*/
-		HAL_DMA_Init(huartex->huart.hdmarx);
+		
+		if (huartex->huart.hdmarx)
+		{
+			HAL_DMA_Init(huartex->huart.hdmarx);
+		}
 
 //		__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
 
-		HAL_DMA_Init(huartex->huart.hdmatx);
+		if (huartex->huart.hdmatx)
+		{
+			HAL_DMA_Init(huartex->huart.hdmatx);
+		}
 
 //		__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
 
@@ -110,9 +119,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 //  HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_0); should be moved elsewhere, globally.
 		if (huartex->irq_config) 
 		{
-			HAL_NVIC_SetPriority(huartex->irq_config->irqn, 
-													huartex->irq_config->preempt_priority,
-													huartex->irq_config->sub_priority);					
+			HAL_NVIC_SetPriority(	huartex->irq_config->irqn, 
+														huartex->irq_config->preempt_priority,
+														huartex->irq_config->sub_priority);					
 			HAL_NVIC_EnableIRQ(huartex->irq_config->irqn);
 		}
   }

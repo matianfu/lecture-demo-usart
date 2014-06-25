@@ -149,6 +149,27 @@ static UART_IrqConfig uart2_irq_config =
 	.irqn = USART2_IRQn,
 };
 
+static UARTEX_HandleTypeDef huartex2_pd5_pd6 = 
+{
+	.gpiox = GPIOD,
+	.gpio_init = &gpio_init_usart2_pd5_pd6,
+	.huart = 
+	{
+		.Instance = USART2,
+		.Init = 
+		{
+			.BaudRate = 115200,
+			.WordLength = UART_WORDLENGTH_8B,
+			.StopBits = UART_STOPBITS_1,
+			.Parity = UART_PARITY_NONE,
+			.Mode = UART_MODE_TX_RX,
+			.HwFlowCtl = UART_HWCONTROL_NONE,
+			.OverSampling = UART_OVERSAMPLING_16,
+		},
+	},
+
+};
+
 static UARTEX_HandleTypeDef huartex2 = 
 {
 	.gpiox = GPIOD,
@@ -213,11 +234,21 @@ TEST_TEAR_DOWN(Usart_DMA_MspInit)
 {
 }
 
+/**
+//TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
+//{
+//	HAL_UART_ClockDisable(huart->Instance);
+//	HAL_UART_MspInit(huart);
+//	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(huart->Instance));
+//}
+**/
+
 TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
 {
-	HAL_UART_ClockDisable(huart->Instance);
-	HAL_UART_MspInit(huart);
-	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(huart->Instance));
+	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
+	HAL_UART_ClockDisable(h->Instance);
+	HAL_UART_MspInit(h);
+	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(h->Instance));
 }
 
 /** don't use the misleading name, such as "GpioShouldeBeConfigured", since we do NOT fully test the gpio configuration. **/

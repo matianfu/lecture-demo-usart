@@ -53,7 +53,10 @@ Goal: refactor generated code for usart initialization.
 	yes, we refactor mx_usart2_init first.
 	of course, test case first. Acturally here is the problem. mspinit do not have return value and hal_init change hal state to ready anyway.
 	test case added and passed.
-
+29.	add new static struct to replace original globals. modify both test case and globals.
+	well, we are going to modify existing test case first. using different test data.
+	surprisingly, it passed ANYWAY.
+	best practice: (1) using assert_parameter; (2) change it.
 
 
 Pending: 
