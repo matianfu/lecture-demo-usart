@@ -97,6 +97,7 @@ static UART_HandleTypeDef uart2 =
 // extern DMA_HandleTypeDef hdma_usart2_rx;
 // extern DMA_HandleTypeDef hdma_usart2_tx;
 
+/** forward declaration **/
 static UARTEX_HandleTypeDef huartex2;
 
 static DMA_HandleTypeDef usart2_rx_dma_handle =
@@ -368,15 +369,18 @@ TEST(Usart_DMA, MX_USART_UART_Init)
 	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, h->State);
 }
 
-/**
+
 TEST(Usart_DMA, MX_USART_UART_Init_TxRx)
 {
-	MX_USART2_UART_Init();
-	while(__HAL_UART_GET_FLAG(huart, UART_FLAG_RXNE) == RESET);
-	*tmp = (uint16_t)(huart->Instance->DR & (uint16_t)0x00FF);
-	
+	uint8_t recv, token = '&';
+	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
+	MX_USART_UART_Init(h);
+	HAL_UART_Transmit(h, &token, 1, 10);
+	while(__HAL_UART_GET_FLAG(h, UART_FLAG_RXNE) == RESET);
+	recv = (uint8_t)(h->Instance->DR & (uint16_t)0x00FF);
+	TEST_ASSERT_EQUAL_UINT8(token, recv);
 }
-**/
+
 
 TEST(Usart_DMA, DoNothing)
 {
@@ -389,6 +393,7 @@ TEST_GROUP_RUNNER(Usart_DMA)
 	RUN_TEST_CASE(Usart_DMA, UartClockDisable);
 	RUN_TEST_CASE(Usart_DMA, UartClockEnable);
 	RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init);
+	RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init_TxRx);
 }
 
 

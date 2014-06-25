@@ -46,14 +46,6 @@ extern UART_HandleTypeDef huart2;
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 
 /******************************************************************************/
 
-/**
-* @brief This function handles DMA1 Stream6 global interrupt.
-*/
-void DMA1_Stream6_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream6_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart2_tx);
-}
 
 /**
 * @brief This function handles System tick timer.
@@ -64,22 +56,6 @@ void SysTick_Handler(void)
   HAL_SYSTICK_IRQHandler();
 }
 
-/**
-* @brief This function handles DMA1 Stream5 global interrupt.
-*/
-void DMA1_Stream5_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(DMA1_Stream5_IRQn);
-  HAL_DMA_IRQHandler(&hdma_usart2_rx);
-}
 
-/**
-* @brief This function handles USART2 global interrupt.
-*/
-void USART2_IRQHandler(void)
-{
-  HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
-  HAL_UART_IRQHandler(&huart2);
-}
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

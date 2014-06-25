@@ -45,11 +45,116 @@
 
 /* USER CODE END 0 */
 
-UART_HandleTypeDef huart2;
-UART_HandleTypeDef huart3;
-DMA_HandleTypeDef hdma_usart2_rx;
-DMA_HandleTypeDef hdma_usart2_tx;
+// UART_HandleTypeDef huart2;
+// UART_HandleTypeDef huart3;
 
+
+/** forward declaration **/
+static UARTEX_HandleTypeDef huartex2;
+
+static DMA_HandleTypeDef hdma_usart2_rx =
+{
+	.Instance = DMA1_Stream5,
+	.Init = 
+	{
+		.Channel = DMA_CHANNEL_4,
+    .Direction = DMA_PERIPH_TO_MEMORY,
+    .PeriphInc = DMA_PINC_DISABLE,
+    .MemInc = DMA_MINC_ENABLE,
+    .PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
+    .MemDataAlignment = DMA_MDATAALIGN_BYTE,
+    .Mode = DMA_NORMAL,
+    .Priority = DMA_PRIORITY_LOW,
+    .FIFOMode = DMA_FIFOMODE_DISABLE,
+	},
+	.Parent = &huartex2.huart,	/* statically linked */
+};
+
+static DMA_HandleTypeDef hdma_usart2_tx = 
+{
+	.Instance = DMA1_Stream6,
+	.Init = 
+	{
+		.Channel = DMA_CHANNEL_4,
+		.Direction = DMA_MEMORY_TO_PERIPH,
+		.PeriphInc = DMA_PINC_DISABLE,
+		.MemInc = DMA_MINC_ENABLE,
+		.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
+		.MemDataAlignment = DMA_MDATAALIGN_BYTE,
+		.Mode = DMA_NORMAL,
+		.Priority = DMA_PRIORITY_LOW,
+		.FIFOMode = DMA_FIFOMODE_DISABLE,
+	},
+	.Parent = &huartex2.huart,	/* statically linked */
+};
+
+static GPIO_InitTypeDef gpio_init_usart2_pd5_pd6 =
+{
+	.Pin = GPIO_PIN_5|GPIO_PIN_6,
+	.Mode = GPIO_MODE_AF_PP,
+	.Pull = GPIO_NOPULL,
+	.Speed = GPIO_SPEED_LOW,
+	.Alternate = GPIO_AF7_USART2,
+};
+
+static UART_IrqConfig uart2_irq_config =
+{
+	.irqn = USART2_IRQn,
+};
+
+static UARTEX_HandleTypeDef huartex2 = 
+{
+	.gpiox = GPIOD,
+	.gpio_init = &gpio_init_usart2_pd5_pd6,
+	.huart = 
+	{
+		.Instance = USART2,
+		.Init = 
+		{
+			.BaudRate = 115200,
+			.WordLength = UART_WORDLENGTH_8B,
+			.StopBits = UART_STOPBITS_1,
+			.Parity = UART_PARITY_NONE,
+			.Mode = UART_MODE_TX_RX,
+			.HwFlowCtl = UART_HWCONTROL_NONE,
+			.OverSampling = UART_OVERSAMPLING_16,
+		},
+		.hdmarx = &hdma_usart2_rx,	/** statically linked **/
+		.hdmatx = &hdma_usart2_tx,
+	},
+	
+	.irq_config = &uart2_irq_config,
+};
+
+
+static GPIO_InitTypeDef gpio_init_usart3_pd8_pd9 =
+{
+	.Pin = GPIO_PIN_8|GPIO_PIN_9,
+	.Mode = GPIO_MODE_AF_PP,
+	.Pull = GPIO_NOPULL,
+	.Speed = GPIO_SPEED_LOW,
+	.Alternate = GPIO_AF7_USART3,
+};	
+	
+static UARTEX_HandleTypeDef huartex3 = 
+{
+	.gpiox = GPIOD,
+	.gpio_init = &gpio_init_usart3_pd8_pd9,
+	.huart = 
+	{
+		.Instance = USART3,
+		.Init = 
+		{
+			.BaudRate = 115200,
+			.WordLength = UART_WORDLENGTH_8B,
+			.StopBits = UART_STOPBITS_1,
+			.Parity = UART_PARITY_NONE,
+			.Mode = UART_MODE_TX_RX,
+			.HwFlowCtl = UART_HWCONTROL_NONE,
+			.OverSampling = UART_OVERSAMPLING_16,
+		},
+	},
+};
 
 
 /* USART2 init function */
@@ -73,14 +178,17 @@ void MX_USART_UART_Init(UART_HandleTypeDef* huart)
 void MX_USART3_UART_Init(void)
 {
 
-  huart3.Instance = USART3;
-  huart3.Init.BaudRate = 115200;
-  huart3.Init.WordLength = UART_WORDLENGTH_8B;
-  huart3.Init.StopBits = UART_STOPBITS_1;
-  huart3.Init.Parity = UART_PARITY_NONE;
-  huart3.Init.Mode = UART_MODE_TX_RX;
-  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+//  huart3.Instance = USART3;
+//  huart3.Init.BaudRate = 115200;
+//  huart3.Init.WordLength = UART_WORDLENGTH_8B;
+//  huart3.Init.StopBits = UART_STOPBITS_1;
+//  huart3.Init.Parity = UART_PARITY_NONE;
+//  huart3.Init.Mode = UART_MODE_TX_RX;
+//  huart3.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+//  huart3.Init.OverSampling = UART_OVERSAMPLING_16;
+
+#define huart3 	huartex3.huart	
+	
   HAL_UART_Init(&huart3);
 
 }
@@ -295,6 +403,34 @@ bool HAL_UART_ClockIsEnabled(USART_TypeDef* uart)
 	}
 	
 	return false;
+}
+
+/**
+* @brief This function handles DMA1 Stream6 global interrupt.
+*/
+void DMA1_Stream6_IRQHandler(void)
+{
+  HAL_NVIC_ClearPendingIRQ(DMA1_Stream6_IRQn);
+  HAL_DMA_IRQHandler(&hdma_usart2_tx);
+}
+
+
+/**
+* @brief This function handles DMA1 Stream5 global interrupt.
+*/
+void DMA1_Stream5_IRQHandler(void)
+{
+  HAL_NVIC_ClearPendingIRQ(DMA1_Stream5_IRQn);
+  HAL_DMA_IRQHandler(&hdma_usart2_rx);
+}
+
+/**
+* @brief This function handles USART2 global interrupt.
+*/
+void USART2_IRQHandler(void)
+{
+  HAL_NVIC_ClearPendingIRQ(USART2_IRQn);
+  HAL_UART_IRQHandler(&huartex2.huart);
 }
 
 /**

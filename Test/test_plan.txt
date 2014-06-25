@@ -59,6 +59,11 @@ Goal: refactor generated code for usart initialization.
 	best practice: (1) using assert_parameter; (2) change it.
 30. gpio_init test case updated. minor.
 31. mx_usart2_uart_init refactored.
+32. add a new test case for mx_usart_usart_init, test transmission.
+33. replace usart2 globals with new globals with designated initializer. move isr code to usart.c. test passed.
+34. now we have using usart2 to work like usart3 and all test case passed. it's time to merge usart2/usart3 code in mspinit.
+	oh, wait, first add new globals for usart3, replace init code in MX_USART3_UART_Init, test passed.
+
 
 
 Pending: 
