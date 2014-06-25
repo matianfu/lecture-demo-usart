@@ -183,13 +183,14 @@ void MX_USART3_UART_Init(void)
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 
-  GPIO_InitTypeDef GPIO_InitStruct;
+//  GPIO_InitTypeDef GPIO_InitStruct;
 	UARTEX_HandleTypeDef* huartex = container_of(huart, UARTEX_HandleTypeDef, huart);
 	
-  if(huart->Instance==USART2)
-  {
-    /* Peripheral clock enable */
-    __USART2_CLK_ENABLE();
+	HAL_UART_ClockEnable(huart->Instance);
+//  if(huart->Instance==USART2)
+//  {
+//    /* Peripheral clock enable */
+//    __USART2_CLK_ENABLE();
   
 		HAL_GPIO_Init(huartex->gpiox, huartex->gpio_init);
 
@@ -219,11 +220,11 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 														huartex->irq_config->sub_priority);					
 			HAL_NVIC_EnableIRQ(huartex->irq_config->irqn);
 		}
-  }
-  else if(huart->Instance==USART3)
-  {
-    /* Peripheral clock enable */
-    __USART3_CLK_ENABLE();
+//  }
+//  else if(huart->Instance==USART3)
+//  {
+//    /* Peripheral clock enable */
+//    __USART3_CLK_ENABLE();
   
     /**USART3 GPIO Configuration    
     PD8     ------> USART3_TX
@@ -236,8 +237,8 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 //    GPIO_InitStruct.Alternate = GPIO_AF7_USART3;
 //    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 	
-		HAL_GPIO_Init(huartex->gpiox, huartex->gpio_init);
-  }
+//		HAL_GPIO_Init(huartex->gpiox, huartex->gpio_init);
+//  }
 }
 
 void HAL_UART_MspDeInit(UART_HandleTypeDef* huart)
