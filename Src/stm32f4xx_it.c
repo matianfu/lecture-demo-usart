@@ -38,9 +38,9 @@
 
 /* External variables --------------------------------------------------------*/
 
-extern DMA_HandleTypeDef hdma_usart2_rx;
-extern DMA_HandleTypeDef hdma_usart2_tx;
-extern UART_HandleTypeDef huart2;
+//extern DMA_HandleTypeDef hdma_usart2_rx;
+//extern DMA_HandleTypeDef hdma_usart2_tx;
+//extern UART_HandleTypeDef huart2;
 
 /******************************************************************************/
 /*            Cortex-M4 Processor Interruption and Exception Handlers         */ 

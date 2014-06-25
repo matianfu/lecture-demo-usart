@@ -359,22 +359,25 @@ TEST(Usart_DMA, UartClockEnable)
 	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(USART2));
 }
 
-extern UART_HandleTypeDef huart2;
+// extern UART_HandleTypeDef huart2;
 	
-TEST(Usart_DMA, MX_USART_UART_Init)
-{
-	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
-	h->State = HAL_UART_STATE_RESET;
-	MX_USART_UART_Init(h);
-	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, h->State);
-}
+//TEST(Usart_DMA, MX_USART_UART_Init)
+//{
+//	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
+//	h->State = HAL_UART_STATE_RESET;
+//	MX_USART_UART_Init(h);
+//	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, h->State);
+//}
 
 
-TEST(Usart_DMA, MX_USART_UART_Init_TxRx)
+TEST(Usart_DMA, HAL_UART_Init_TxRx)
 {
 	uint8_t recv, token = '&';
 	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
-	MX_USART_UART_Init(h);
+	
+	// MX_USART_UART_Init(h);
+	HAL_UART_Init(h);
+	
 	HAL_UART_Transmit(h, &token, 1, 10);
 	while(__HAL_UART_GET_FLAG(h, UART_FLAG_RXNE) == RESET);
 	recv = (uint8_t)(h->Instance->DR & (uint16_t)0x00FF);
@@ -382,18 +385,18 @@ TEST(Usart_DMA, MX_USART_UART_Init_TxRx)
 }
 
 
-TEST(Usart_DMA, DoNothing)
-{
-	TEST_ASSERT_TRUE(true);
-}
+//TEST(Usart_DMA, DoNothing)
+//{
+//	TEST_ASSERT_TRUE(true);
+//}
 
 TEST_GROUP_RUNNER(Usart_DMA)
 {
-	RUN_TEST_CASE(Usart_DMA, DoNothing);
+	// RUN_TEST_CASE(Usart_DMA, DoNothing);
 	RUN_TEST_CASE(Usart_DMA, UartClockDisable);
 	RUN_TEST_CASE(Usart_DMA, UartClockEnable);
-	RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init);
-	RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init_TxRx);
+	// RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init);
+	RUN_TEST_CASE(Usart_DMA, HAL_UART_Init_TxRx);
 }
 
 
