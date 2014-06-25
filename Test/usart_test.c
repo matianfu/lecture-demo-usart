@@ -256,8 +256,9 @@ TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
 TEST(Usart_DMA_MspInit, GpioShouldBeNonInput)
 {
 	uint32_t pins = GPIO_PIN_5|GPIO_PIN_6;
+	UART_HandleTypeDef* h = &huartex2_pd5_pd6.huart;
 	HAL_GPIO_DeInit(GPIOD, pins);
-	HAL_UART_MspInit(huart);
+	HAL_UART_MspInit(h);
 	TEST_ASSERT_TRUE(gpio_modes_all_noninput(GPIOD, pins));
 }
 
@@ -365,6 +366,16 @@ TEST(Usart_DMA, MX_USART_UART_Init)
 	MX_USART2_UART_Init();
 	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, huart2.State);
 }
+
+/**
+TEST(Usart_DMA, MX_USART_UART_Init_TxRx)
+{
+	MX_USART2_UART_Init();
+	while(__HAL_UART_GET_FLAG(huart, UART_FLAG_RXNE) == RESET);
+	*tmp = (uint16_t)(huart->Instance->DR & (uint16_t)0x00FF);
+	
+}
+**/
 
 TEST(Usart_DMA, DoNothing)
 {
