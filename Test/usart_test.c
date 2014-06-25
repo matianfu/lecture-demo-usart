@@ -314,9 +314,16 @@ TEST_TEAR_DOWN(Usart_DMA)
 
 TEST(Usart_DMA, UartClockDisable)
 {
-	HAL_UART_ClockEnable(USART1);
-	HAL_UART_ClockDisable(USART1);
-	TEST_ASSERT_FALSE(HAL_UART_ClockIsEnabled(USART1));
+	HAL_UART_ClockEnable(USART2);
+	HAL_UART_ClockDisable(USART2);
+	TEST_ASSERT_FALSE(HAL_UART_ClockIsEnabled(USART2));
+}
+
+TEST(Usart_DMA, UartClockEnable)
+{
+	HAL_UART_ClockDisable(USART2);
+	HAL_UART_ClockEnable(USART2);
+	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(USART2));
 }
 
 TEST(Usart_DMA, DoNothing)
@@ -327,6 +334,8 @@ TEST(Usart_DMA, DoNothing)
 TEST_GROUP_RUNNER(Usart_DMA)
 {
 	RUN_TEST_CASE(Usart_DMA, DoNothing);
+	RUN_TEST_CASE(Usart_DMA, UartClockDisable);
+	RUN_TEST_CASE(Usart_DMA, UartClockEnable);
 }
 
 

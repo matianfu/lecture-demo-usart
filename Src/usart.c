@@ -189,6 +189,38 @@ in rcc_ex
 #define __UART4_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART4EN))
 #define __UART5_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART5EN))
 ******************************************************************************/
+void HAL_UART_ClockEnable(USART_TypeDef* uart)
+{
+	if (uart == USART1)
+	{
+		__USART1_CLK_ENABLE();
+	}
+	else if (uart == USART2)
+	{
+		__USART2_CLK_ENABLE();
+	}
+	else if (uart == USART3)
+	{
+		__USART3_CLK_ENABLE();
+	}
+	else if (uart == UART4)
+	{
+		__UART4_CLK_ENABLE();
+	}
+	else if (uart == UART5)
+	{
+		__UART5_CLK_ENABLE();
+	}
+	else if (uart == USART6)
+	{
+		__USART6_CLK_ENABLE();
+	}
+	else
+	{
+		assert_param(false);
+	}
+}
+
 void HAL_UART_ClockDisable(USART_TypeDef* uart)
 {
 	if (uart == USART1)

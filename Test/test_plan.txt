@@ -47,7 +47,8 @@ Goal: refactor generated code for usart initialization.
 	rename uart_clock_disable -> HAL_UART_ClockDisable, move to production code.
 	rename uart_clock_enabled -> HAL_UART_ClockIsEnabled, move to production code.
 	add test case for clock disable, new function HAL_UART_ClockEnable, compilation fails.
-
+27.	add production code for HAL_UART_ClockEnable, test passed. add new test case for Enable, test passed.
+28. we can do more refactor now, with this enable/disable code.
 
 
 Pending: 

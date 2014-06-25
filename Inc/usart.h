@@ -67,6 +67,7 @@ void MX_USART2_UART_Init(void);
 void MX_USART3_UART_Init(void);
 
 /** utility **/
+void HAL_UART_ClockEnable(USART_TypeDef* uart);
 void HAL_UART_ClockDisable(USART_TypeDef* uart);
 bool HAL_UART_ClockIsEnabled(USART_TypeDef* uart);
 
