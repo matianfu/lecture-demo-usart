@@ -175,6 +175,7 @@ void MX_USART3_UART_Init(void)
 void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 {
 	UARTEX_HandleTypeDef* huartex = container_of(huart, UARTEX_HandleTypeDef, huart);
+	IRQ_ConfigTypeDef* iconf;
 	
 	HAL_UART_ClockEnable(huart->Instance);
   
@@ -184,8 +185,17 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 	if (huartex->huart.hdmarx)
 	{
 		HAL_DMA_Init(huartex->huart.hdmarx);
+		//	__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
+		assert_param(huartex->huart.hdmarx->Parent == &huartex->huart);
 	}
-//	__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
+	
+	if (huartex->dmarx_irq_config)
+	{
+		iconf = huartex->dmarx_irq_config;
+		HAL_NVIC_SetPriority(iconf->irqn, iconf->preempt_priority, iconf->sub_priority);
+		HAL_NVIC_EnableIRQ(iconf->irqn);
+	}
+
 
 	if (huartex->huart.hdmatx)
 	{
