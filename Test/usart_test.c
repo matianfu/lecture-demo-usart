@@ -326,6 +326,15 @@ TEST(Usart_DMA, UartClockEnable)
 	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(USART2));
 }
 
+extern UART_HandleTypeDef huart2;
+	
+TEST(Usart_DMA, MX_USART_UART_Init)
+{
+	huart2.State = HAL_UART_STATE_RESET;
+	MX_USART2_UART_Init();
+	TEST_ASSERT_EQUAL_HEX8(HAL_UART_STATE_READY, huart2.State);
+}
+
 TEST(Usart_DMA, DoNothing)
 {
 	TEST_ASSERT_TRUE(true);
@@ -336,6 +345,7 @@ TEST_GROUP_RUNNER(Usart_DMA)
 	RUN_TEST_CASE(Usart_DMA, DoNothing);
 	RUN_TEST_CASE(Usart_DMA, UartClockDisable);
 	RUN_TEST_CASE(Usart_DMA, UartClockEnable);
+	RUN_TEST_CASE(Usart_DMA, MX_USART_UART_Init);
 }
 
 

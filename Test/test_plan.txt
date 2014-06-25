@@ -49,6 +49,11 @@ Goal: refactor generated code for usart initialization.
 	add test case for clock disable, new function HAL_UART_ClockEnable, compilation fails.
 27.	add production code for HAL_UART_ClockEnable, test passed. add new test case for Enable, test passed.
 28. we can do more refactor now, with this enable/disable code.
+	we want to refine mspinit, unify usart2 with usart3; but we are using usart3, could we make usart2 works like usart3 before we change the code?
+	yes, we refactor mx_usart2_init first.
+	of course, test case first. Acturally here is the problem. mspinit do not have return value and hal_init change hal state to ready anyway.
+	test case added and passed.
+
 
 
 Pending: 
