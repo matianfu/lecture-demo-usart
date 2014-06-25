@@ -318,6 +318,13 @@ TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_tx_dma_handle.State);
 }
 
+TEST(Usart_DMA_MspInit, TxDMAIRQShouldBeEnabled)
+{
+	HAL_NVIC_DisableIRQ(huartex2.dmatx_irq_config->irqn);
+	HAL_UART_MspInit(&huartex2.huart);
+	TEST_ASSERT_TRUE(irq_enabled(huartex2.dmatx_irq_config->irqn));
+}
+
 /** obsolete case 
 //TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
 //{

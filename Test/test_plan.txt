@@ -69,7 +69,7 @@ Goal: refactor generated code for usart initialization.
 38. UART_IrqConfig -> IRQ_ConfigTypeDef.
 	add two field into UARTEX_HandleTypeDef for dma irq config. add one test case. failed.
 39. add dmarx irq enabling code in mspinit, bugged and fixed. test pass.
-40. 
+40. add dmatx irq test.
 
 
 Pending: 
