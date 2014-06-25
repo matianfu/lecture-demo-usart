@@ -286,7 +286,7 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_rx_dma_handle.State);
 }
 
-TEST(Usart_DMA_MspInit, RxDMAIRQShouldeBeEnabled)
+TEST(Usart_DMA_MspInit, RxDMAIRQShouldBeEnabled)
 {
 	HAL_NVIC_DisableIRQ(huartex2.dmarx_irq_config->irqn);
 	HAL_UART_MspInit(&huartex2.huart);
@@ -355,9 +355,10 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
-	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAIRQShouldeBeEnabled);
+	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAIRQShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
+	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAIRQShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
 }
 
