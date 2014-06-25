@@ -43,6 +43,10 @@ Goal: refactor generated code for usart initialization.
 23. typo bug, cleared. one test case obsolete.
 24. use static instance to substitute global dma tx init, one case obsolete. passed.
 25. add a struct for uart irq config. modify production code. passed.
+26. a bit messy, right? let's clean it first.
+	rename uart_clock_disable -> HAL_UART_ClockDisable, move to production code.
+	rename uart_clock_enabled -> HAL_UART_ClockIsEnabled, move to production code.
+	add test case for clock disable, new function HAL_UART_ClockEnable, compilation fails.
 
 
 
@@ -51,6 +55,13 @@ Pending:
 2. we don't like the way dma globals are used in mspinit. not good for test.
 3. move SetPriorityGroup out of hal_uart_mspinit.
 4. add a test case to mspinit with parameterized priority.
+
+Task:
+1. setup and teardown code.
+2. uart clock enable/disable.
+3. feature: dma irq should be set in uart.
+4. feature: dma clock should be get/put pattern.
+
 
 
 

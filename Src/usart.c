@@ -34,8 +34,8 @@
   */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "usart.h"
-
 #include "gpio.h"
 #include "dma.h"
 
@@ -94,45 +94,13 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
     /* Peripheral clock enable */
     __USART2_CLK_ENABLE();
   
-    /**USART2 GPIO Configuration    
-    PD5     ------> USART2_TX
-    PD6     ------> USART2_RX 
-    */
-//    GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6;
-//    GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
-//    GPIO_InitStruct.Pull = GPIO_NOPULL;
-//    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
-//    GPIO_InitStruct.Alternate = GPIO_AF7_USART2;
-//    HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
 		HAL_GPIO_Init(huartex->gpiox, huartex->gpio_init);
 
     /* Peripheral DMA init*/
-//    hdma_usart2_rx.Instance = DMA1_Stream5;
-//    hdma_usart2_rx.Init.Channel = DMA_CHANNEL_4;
-//    hdma_usart2_rx.Init.Direction = DMA_PERIPH_TO_MEMORY;
-//    hdma_usart2_rx.Init.PeriphInc = DMA_PINC_DISABLE;
-//    hdma_usart2_rx.Init.MemInc = DMA_MINC_ENABLE;
-//    hdma_usart2_rx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-//    hdma_usart2_rx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-//    hdma_usart2_rx.Init.Mode = DMA_NORMAL;
-//    hdma_usart2_rx.Init.Priority = DMA_PRIORITY_LOW;
-//    hdma_usart2_rx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-//    HAL_DMA_Init(&hdma_usart2_rx);
 		HAL_DMA_Init(huartex->huart.hdmarx);
 
 //		__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
 
-//    hdma_usart2_tx.Instance = DMA1_Stream6;
-//    hdma_usart2_tx.Init.Channel = DMA_CHANNEL_4;
-//    hdma_usart2_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
-//    hdma_usart2_tx.Init.PeriphInc = DMA_PINC_DISABLE;
-//    hdma_usart2_tx.Init.MemInc = DMA_MINC_ENABLE;
-//    hdma_usart2_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
-//    hdma_usart2_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
-//    hdma_usart2_tx.Init.Mode = DMA_NORMAL;
-//    hdma_usart2_tx.Init.Priority = DMA_PRIORITY_LOW;
-//    hdma_usart2_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
-//    HAL_DMA_Init(&hdma_usart2_tx);
 		HAL_DMA_Init(huartex->huart.hdmatx);
 
 //		__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
@@ -208,6 +176,84 @@ int unity_output_char(int a)
 	
 	HAL_UART_Transmit(&huart3, &chr, 1, 10);
 	return a;
+}
+
+/******************************************************************************
+in rcc
+#define __USART1_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART1EN))
+#define __USART6_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART6EN))
+#define __USART2_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART2EN))
+
+in rcc_ex
+#define __USART3_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART3EN))
+#define __UART4_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART4EN))
+#define __UART5_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART5EN))
+******************************************************************************/
+void HAL_UART_ClockDisable(USART_TypeDef* uart)
+{
+	if (uart == USART1)
+	{
+		__USART1_CLK_DISABLE();
+	}
+	else if (uart == USART2)
+	{
+		__USART2_CLK_DISABLE();
+	}
+	else if (uart == USART3)
+	{
+		__USART3_CLK_DISABLE();
+	}
+	else if (uart == UART4)
+	{
+		__UART4_CLK_DISABLE();
+	}
+	else if (uart == UART5)
+	{
+		__UART5_CLK_DISABLE();
+	}
+	else if (uart == USART6)
+	{
+		__USART6_CLK_DISABLE();
+	}
+	else
+	{
+		assert_param(false);
+	}
+}
+
+
+bool HAL_UART_ClockIsEnabled(USART_TypeDef* uart)
+{
+	if (uart == USART1)
+	{
+		return (RCC->APB2ENR & RCC_APB2ENR_USART1EN) ? true : false;
+	}
+	else if (uart == USART2)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_USART2EN) ? true : false;
+	}
+	else if (uart == USART3)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_USART3EN) ? true : false;
+	}
+	else if (uart == UART4)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_UART4EN) ? true : false;
+	}
+	else if (uart == UART5)
+	{
+		return (RCC->APB1ENR & RCC_APB1ENR_UART5EN) ? true : false;
+	}
+	else if (uart == USART6)
+	{
+		return (RCC->APB2ENR & RCC_APB2ENR_USART6EN) ? true : false;
+	}
+	else 
+	{
+		assert_param(false);
+	}
+	
+	return false;
 }
 
 /**

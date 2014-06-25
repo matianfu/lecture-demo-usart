@@ -121,17 +121,17 @@ static DMA_HandleTypeDef usart2_tx_dma_handle =
 {
 	.Instance = DMA1_Stream6,
 	.Init = 
-		{
-			.Channel = DMA_CHANNEL_4,
-			.Direction = DMA_MEMORY_TO_PERIPH,
-			.PeriphInc = DMA_PINC_DISABLE,
-			.MemInc = DMA_MINC_ENABLE,
-			.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
-			.MemDataAlignment = DMA_MDATAALIGN_BYTE,
-			.Mode = DMA_NORMAL,
-			.Priority = DMA_PRIORITY_LOW,
-			.FIFOMode = DMA_FIFOMODE_DISABLE,
-		},
+	{
+		.Channel = DMA_CHANNEL_4,
+		.Direction = DMA_MEMORY_TO_PERIPH,
+		.PeriphInc = DMA_PINC_DISABLE,
+		.MemInc = DMA_MINC_ENABLE,
+		.PeriphDataAlignment = DMA_PDATAALIGN_BYTE,
+		.MemDataAlignment = DMA_MDATAALIGN_BYTE,
+		.Mode = DMA_NORMAL,
+		.Priority = DMA_PRIORITY_LOW,
+		.FIFOMode = DMA_FIFOMODE_DISABLE,
+	},
 	.Parent = &huartex2.huart,	/* statically linked */
 };
 
@@ -175,82 +175,8 @@ static UARTEX_HandleTypeDef huartex2 =
 
 static UART_HandleTypeDef* huart = &huartex2.huart;
 
-/******************************************************************************
-in rcc
-#define __USART1_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART1EN))
-#define __USART6_CLK_ENABLE()  (RCC->APB2ENR |= (RCC_APB2ENR_USART6EN))
-#define __USART2_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART2EN))
 
-in rcc_ex
-#define __USART3_CLK_ENABLE()  (RCC->APB1ENR |= (RCC_APB1ENR_USART3EN))
-#define __UART4_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART4EN))
-#define __UART5_CLK_ENABLE()   (RCC->APB1ENR |= (RCC_APB1ENR_UART5EN))
-******************************************************************************/
-void uart_clock_disable(USART_TypeDef* uart)
-{
-	if (uart == USART1)
-	{
-		__USART1_CLK_DISABLE();
-	}
-	else if (uart == USART2)
-	{
-		__USART2_CLK_DISABLE();
-	}
-	else if (uart == USART3)
-	{
-		__USART3_CLK_DISABLE();
-	}
-	else if (uart == UART4)
-	{
-		__UART4_CLK_DISABLE();
-	}
-	else if (uart == UART5)
-	{
-		__UART5_CLK_DISABLE();
-	}
-	else if (uart == USART6)
-	{
-		__USART6_CLK_DISABLE();
-	}
-	else
-	{
-		assert_param(false);
-	}
-}
 
-bool uart_clock_enabled(USART_TypeDef* uart)
-{
-	if (uart == USART1)
-	{
-		return (RCC->APB2ENR & RCC_APB2ENR_USART1EN) ? true : false;
-	}
-	else if (uart == USART2)
-	{
-		return (RCC->APB1ENR & RCC_APB1ENR_USART2EN) ? true : false;
-	}
-	else if (uart == USART3)
-	{
-		return (RCC->APB1ENR & RCC_APB1ENR_USART3EN) ? true : false;
-	}
-	else if (uart == UART4)
-	{
-		return (RCC->APB1ENR & RCC_APB1ENR_UART4EN) ? true : false;
-	}
-	else if (uart == UART5)
-	{
-		return (RCC->APB1ENR & RCC_APB1ENR_UART5EN) ? true : false;
-	}
-	else if (uart == USART6)
-	{
-		return (RCC->APB2ENR & RCC_APB2ENR_USART6EN) ? true : false;
-	}
-	else 
-	{
-		assert_param(false);
-	}
-	
-	return false;
-}
 
 bool gpio_modes_all_noninput(GPIO_TypeDef* gpiox, uint32_t pins)
 {
@@ -289,9 +215,9 @@ TEST_TEAR_DOWN(Usart_DMA_MspInit)
 
 TEST(Usart_DMA_MspInit, UartClockShouldBeEnabled)
 {
-	uart_clock_disable(huart->Instance);
+	HAL_UART_ClockDisable(huart->Instance);
 	HAL_UART_MspInit(huart);
-	TEST_ASSERT_TRUE(uart_clock_enabled(huart->Instance));
+	TEST_ASSERT_TRUE(HAL_UART_ClockIsEnabled(huart->Instance));
 }
 
 /** don't use the misleading name, such as "GpioShouldeBeConfigured", since we do NOT fully test the gpio configuration. **/
@@ -312,7 +238,7 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_rx_dma_handle.State);
 }
 
-/** this case is obsolete **/
+/** this case is obsolete 
 //TEST(Usart_DMA_MspInit, RxDMAShouldBeLinked)
 //{
 //	HAL_DMA_DeInit(&usart2_rx_dma_handle);
@@ -327,6 +253,7 @@ TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 //	TEST_ASSERT_NOT_NULL(huart->hdmarx->Parent);
 //	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmarx->Parent);
 //}
+**/
 
 TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 {
@@ -336,7 +263,7 @@ TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 	TEST_ASSERT_EQUAL(HAL_DMA_STATE_READY, usart2_tx_dma_handle.State);
 }
 
-/** obsolete case **/
+/** obsolete case 
 //TEST(Usart_DMA_MspInit, TxDMAShouldBeLinked)
 //{
 //	HAL_DMA_DeInit(&usart2_tx_dma_handle);
@@ -351,6 +278,7 @@ TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 //	TEST_ASSERT_NOT_NULL(huart->hdmatx->Parent);
 //	TEST_ASSERT_EQUAL_HEX32(huart, huart->hdmatx->Parent);
 //}
+**/
 
 TEST(Usart_DMA_MspInit, IRQEnabled)
 {
@@ -382,6 +310,13 @@ TEST_SETUP(Usart_DMA)
 
 TEST_TEAR_DOWN(Usart_DMA)
 {
+}
+
+TEST(Usart_DMA, UartClockDisable)
+{
+	HAL_UART_ClockEnable(USART1);
+	HAL_UART_ClockDisable(USART1);
+	TEST_ASSERT_FALSE(HAL_UART_ClockIsEnabled(USART1));
 }
 
 TEST(Usart_DMA, DoNothing)

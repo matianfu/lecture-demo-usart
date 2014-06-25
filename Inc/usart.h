@@ -40,6 +40,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "stm32f4xx_hal.h"
 	 
 typedef struct
@@ -64,6 +65,10 @@ typedef struct
 
 void MX_USART2_UART_Init(void);
 void MX_USART3_UART_Init(void);
+
+/** utility **/
+void HAL_UART_ClockDisable(USART_TypeDef* uart);
+bool HAL_UART_ClockIsEnabled(USART_TypeDef* uart);
 
 #ifdef __cplusplus
 }
