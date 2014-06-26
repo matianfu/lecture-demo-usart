@@ -80,7 +80,7 @@ Goal: refactor generated code for usart initialization.
 47. add test case ClockOnTurnOffClockOff. compilation fail. add skeleton. test failed.
 48. add production code, some bugs found, test case not enough, fix bugs first, add test case later.
 49. add getter function DMA_Clock_Status, add test case for status bit. test passed.
-
+50. add test case for status bit clear. test passed.
 
 Pending: 
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.
