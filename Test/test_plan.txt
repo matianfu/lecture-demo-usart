@@ -79,6 +79,7 @@ Goal: refactor generated code for usart initialization.
 46. add production code for clock get, test passed.
 47. add test case ClockOnTurnOffClockOff. compilation fail. add skeleton. test failed.
 48. add production code, some bugs found, test case not enough, fix bugs first, add test case later.
+49. add getter function DMA_Clock_Status, add test case for status bit. test passed.
 
 
 Pending: 

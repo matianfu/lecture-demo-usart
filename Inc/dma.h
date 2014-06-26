@@ -47,6 +47,7 @@ void MX_DMA_Init(void);
 	 
 void DMA_Clock_Get(DMA_Stream_TypeDef* stream);
 void DMA_Clock_Put(DMA_Stream_TypeDef* stream);
+void DMA_Clock_Status(uint8_t* dma1, uint8_t* dma2);
 
 #ifdef __cplusplus
 }

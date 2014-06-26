@@ -181,6 +181,19 @@ void DMA_Clock_Put(DMA_Stream_TypeDef* stream)
 	}	
 }
 
+void DMA_Clock_Status(uint8_t* dma1, uint8_t* dma2)
+{
+	if (dma1)
+	{
+		*dma1 = dma1_clock_bits;
+	}
+	
+	if (dma2)
+	{
+		*dma2 = dma2_clock_bits;
+	}
+}
+
 /* USER CODE BEGIN 2 */
 
 /* USER CODE END 2 */
