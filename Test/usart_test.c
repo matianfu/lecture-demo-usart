@@ -328,6 +328,22 @@ TEST(Usart_DMA_MspInit, RxDMAIRQShouldBeEnabled)
 //}
 **/
 
+/** without this test, the HAL_DMA_Init function succeed anyway even if clock not enabled. **/
+TEST(Usart_DMA_MspInit, TxDMAClockBitShouldBeSet)
+{
+	DMA_Clock_TypeDef dma_clock, *original;
+	memset(&dma_clock, 0, sizeof(dma_clock));
+	
+	original = huartex2.dma_clock;
+	huartex2.dma_clock = &dma_clock;
+	
+	HAL_UART_MspInit(&huartex2.huart);
+	
+	TEST_ASSERT_TRUE(DMA_Clock_Status(&dma_clock, huartex2.huart.hdmatx->Instance));
+
+	huartex2.dma_clock = original;
+}
+
 TEST(Usart_DMA_MspInit, TxDMAShouldBeInitialized)
 {
 	HAL_DMA_DeInit(&usart2_tx_dma_handle);
@@ -375,6 +391,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAIRQShouldBeEnabled);
+	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAClockBitShouldBeSet);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAIRQShouldBeEnabled);

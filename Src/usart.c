@@ -189,7 +189,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		//	__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
 		assert_param(huartex->huart.hdmarx->Parent == &huartex->huart);
 		assert_param(huartex->dma_clock);
-		
+		assert_param(false == DMA_Clock_Status(huartex->dma_clock, huartex->huart.hdmarx->Instance));
 		DMA_Clock_Get(huartex->dma_clock, huartex->huart.hdmarx->Instance);
 		HAL_DMA_Init(huartex->huart.hdmarx);
 	}
@@ -201,12 +201,14 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 		HAL_NVIC_EnableIRQ(iconf->irqn);
 	}
 
-
 	if (huartex->huart.hdmatx)
 	{
-		HAL_DMA_Init(huartex->huart.hdmatx);
 		//	__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
 		assert_param(huartex->huart.hdmatx->Parent == &huartex->huart);
+		assert_param(huartex->dma_clock);
+		assert_param(false == DMA_Clock_Status(huartex->dma_clock, huartex->huart.hdmatx->Instance));
+		DMA_Clock_Get(huartex->dma_clock, huartex->huart.hdmatx->Instance);
+		HAL_DMA_Init(huartex->huart.hdmatx);
 	}
 	
 	if (huartex->dmatx_irq_config)
