@@ -77,6 +77,8 @@ Goal: refactor generated code for usart initialization.
 44. define the function, provide the skeleton, compilation ok.
 45. go back to test case. finished. dont forget to add the new test group to RunAllTests, test fail of course, :)
 46. add production code for clock get, test passed.
+47. add test case ClockOnTurnOffClockOff. compilation fail. add skeleton. test failed.
+48. add production code, some bugs found, test case not enough, fix bugs first, add test case later.
 
 
 Pending: 
