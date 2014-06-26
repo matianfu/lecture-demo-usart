@@ -56,6 +56,11 @@ void MX_DMA_Init(void)
   __DMA1_CLK_ENABLE();
 }
 
+void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
+{
+	
+}
+
 /* USER CODE BEGIN 2 */
 
 /* USER CODE END 2 */

@@ -74,6 +74,7 @@ Goal: refactor generated code for usart initialization.
 42. remove dma irq enabling code in mx_dma_init();
 
 43. analyze and planning dma clock, OR-ing Switch Model, test plan. first test, compilation fail.
+44. define the function, provide the skeleton, compilation ok.
 
 
 Pending: 
