@@ -41,6 +41,7 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "stm32f4xx_hal.h"
 	 
 typedef struct {
@@ -56,7 +57,9 @@ void MX_DMA_Init(void);
 	 
 void DMA_Clock_Get(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream);
 void DMA_Clock_Put(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream);
-void DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, uint8_t* dma1, uint8_t* dma2);
+
+// void DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, uint8_t* dma1, uint8_t* dma2);
+bool DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream);
 
 #ifdef __cplusplus
 }

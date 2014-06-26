@@ -177,17 +177,38 @@ void DMA_Clock_Put(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream)
 	}	
 }
 
-void DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, uint8_t* dma1, uint8_t* dma2)
+bool DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream)
 {
-	if (dma1)
+	int pos = 0;
+	
+	if (DMA1_Stream0 == stream ||
+			DMA1_Stream1 == stream ||
+			DMA1_Stream2 == stream ||
+			DMA1_Stream3 == stream ||
+			DMA1_Stream4 == stream ||
+			DMA1_Stream5 == stream ||
+			DMA1_Stream6 == stream ||
+			DMA1_Stream7 == stream)
 	{
-		*dma1 = dma_clock->dma1;
+		pos = (stream - DMA1_Stream0);
+		return (dma_clock->dma1 & (1 << pos)) ? true : false;
 	}
 	
-	if (dma2)
+	if (DMA2_Stream0 == stream ||
+			DMA2_Stream1 == stream ||
+			DMA2_Stream2 == stream ||
+			DMA2_Stream3 == stream ||
+			DMA2_Stream4 == stream ||
+			DMA2_Stream5 == stream ||
+			DMA2_Stream6 == stream ||
+			DMA2_Stream7 == stream)
 	{
-		*dma2 = dma_clock->dma2;
-	}
+		pos = (stream - DMA2_Stream0);
+		return (dma_clock->dma2 & (1 << pos)) ? true : false;;		
+	}	
+	
+	assert_param(false);
+	return false;
 }
 
 /* USER CODE BEGIN 2 */

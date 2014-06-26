@@ -58,12 +58,9 @@ TEST(DMA_Clock, ClockOffTurnOneOnClockOn)
 }
 
 TEST(DMA_Clock, ClockOffTurnOneOnBitSet)
-{
-	uint8_t dma1;
-	
+{	
 	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
-	DMA_Clock_Status(&dma_clock, &dma1, 0);
-	TEST_ASSERT_TRUE(dma1 == (1<<5));
+	TEST_ASSERT_TRUE(DMA_Clock_Status(&dma_clock, DMA1_Stream5));
 }
 
 TEST(DMA_Clock, ClockOnTurnOffClockOff)
@@ -75,12 +72,9 @@ TEST(DMA_Clock, ClockOnTurnOffClockOff)
 
 TEST(DMA_Clock, ClockOnTurnOffBitClear)
 {
-	uint8_t dma1;
-	
 	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
 	DMA_Clock_Put(&dma_clock, DMA1_Stream5);
-	DMA_Clock_Status(&dma_clock, &dma1, 0);
-	TEST_ASSERT_TRUE(dma1 == 0);
+	TEST_ASSERT_FALSE(DMA_Clock_Status(&dma_clock, DMA1_Stream5));
 }
 
 TEST_GROUP_RUNNER(DMA_Clock)

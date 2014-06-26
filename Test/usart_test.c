@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <string.h>
 #include "stm32f4xx_hal.h"
 #include "unity_fixture.h"
 #include "usart.h"
@@ -277,6 +278,23 @@ TEST(Usart_DMA_MspInit, GpioShouldBeNonInput)
 	HAL_UART_MspInit(h);
 	TEST_ASSERT_TRUE(gpio_modes_all_noninput(GPIOD, pins));
 }
+
+/**
+TEST(Usart_DMA_MspInit, RxDMAClockBitShouldBeSet)
+{
+	uint8_t dmabits;
+	DMA_Clock_TypeDef dma_clock, *original;
+	memset(&dma_clock, 0, sizeof(dma_clock));
+	
+	original = huartex2.dma_clock;
+	huartex2.dma_clock = &dma_clock;
+	
+	HAL_UART_MspInit(&huartex2.huart);
+	
+	DMA_Clock_Status(&dma_clock, &dmabits, 0);
+	// TEST_ASSERT_TRUE(dmabits & (1 << huartex2.huart.hdmarx->
+}
+**/
 
 TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 {
