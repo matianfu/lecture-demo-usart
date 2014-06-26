@@ -42,12 +42,21 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
+	 
+typedef struct {
+	
+	uint8_t	dma1;
+	uint8_t	dma2;
+	
+} DMA_Clock_TypeDef;
+
+extern DMA_Clock_TypeDef dma_clock;
 
 void MX_DMA_Init(void);
 	 
-void DMA_Clock_Get(DMA_Stream_TypeDef* stream);
-void DMA_Clock_Put(DMA_Stream_TypeDef* stream);
-void DMA_Clock_Status(uint8_t* dma1, uint8_t* dma2);
+void DMA_Clock_Get(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream);
+void DMA_Clock_Put(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream);
+void DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, uint8_t* dma1, uint8_t* dma2);
 
 #ifdef __cplusplus
 }

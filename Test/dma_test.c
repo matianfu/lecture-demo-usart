@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <string.h>
 #include "stm32f4xx_hal.h"
 #include "dma.h"
 #include "unity_fixture.h"
@@ -20,6 +21,8 @@ Then Test Plan:
 
 ******************************************************************************/
 
+static DMA_Clock_TypeDef dma_clock = {0,0};
+
 static bool dma1_clock_enabled(void)
 {
 	return (RCC->AHB1ENR & RCC_AHB1ENR_DMA1EN) ? true : false;
@@ -29,6 +32,7 @@ TEST_GROUP(DMA_Clock);
 
 TEST_SETUP(DMA_Clock)
 {
+	memset(&dma_clock, 0, sizeof(dma_clock));
 	__DMA1_CLK_DISABLE();
 	__DMA2_CLK_DISABLE();
 }
@@ -43,10 +47,13 @@ TEST_TEAR_DOWN(DMA_Clock)
 #define __DMA1_CLK_ENABLE()          (RCC->AHB1ENR |= (RCC_AHB1ENR_DMA1EN))
 #define __DMA2_CLK_ENABLE()          (RCC->AHB1ENR |= (RCC_AHB1ENR_DMA2EN))
 ******************************************************************************/
+
+
+
 TEST(DMA_Clock, ClockOffTurnOneOnClockOn)
 {
 	// assume all clocks off.
-	DMA_Clock_Get(DMA1_Stream5);
+	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
 	TEST_ASSERT_TRUE(dma1_clock_enabled());
 }
 
@@ -54,15 +61,15 @@ TEST(DMA_Clock, ClockOffTurnOneOnBitSet)
 {
 	uint8_t dma1;
 	
-	DMA_Clock_Get(DMA1_Stream5);
-	DMA_Clock_Status(&dma1, 0);
+	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
+	DMA_Clock_Status(&dma_clock, &dma1, 0);
 	TEST_ASSERT_TRUE(dma1 == (1<<5));
 }
 
 TEST(DMA_Clock, ClockOnTurnOffClockOff)
 {
-	DMA_Clock_Get(DMA1_Stream5);
-	DMA_Clock_Put(DMA1_Stream5);
+	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
+	DMA_Clock_Put(&dma_clock, DMA1_Stream5);
 	TEST_ASSERT_FALSE(dma1_clock_enabled());
 }
 
@@ -70,9 +77,9 @@ TEST(DMA_Clock, ClockOnTurnOffBitClear)
 {
 	uint8_t dma1;
 	
-	DMA_Clock_Get(DMA1_Stream5);
-	DMA_Clock_Put(DMA1_Stream5);
-	DMA_Clock_Status(&dma1, 0);
+	DMA_Clock_Get(&dma_clock, DMA1_Stream5);
+	DMA_Clock_Put(&dma_clock, DMA1_Stream5);
+	DMA_Clock_Status(&dma_clock, &dma1, 0);
 	TEST_ASSERT_TRUE(dma1 == 0);
 }
 

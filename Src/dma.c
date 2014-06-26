@@ -36,8 +36,14 @@
 #include <stdbool.h>
 #include "dma.h"
 
-static uint8_t dma1_clock_bits = 0;
-static uint8_t dma2_clock_bits = 0;
+DMA_Clock_TypeDef dma_clock = {
+	
+	.dma1 = 0,
+	.dma2 = 0,
+};
+
+// static uint8_t dma1_clock_bits = 0;
+// static uint8_t dma2_clock_bits = 0;
 
 /* USER CODE BEGIN 0 */
 
@@ -81,9 +87,8 @@ void MX_DMA_Init(void)
 #define DMA2_Stream7        ((DMA_Stream_TypeDef *) DMA2_Stream7_BASE)
 ******************************************************************************/
 
-void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
+void DMA_Clock_Get(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream)
 {
-	uint8_t* dma = 0;
 	int pos = 0;
 	
 	if (DMA1_Stream0 == stream ||
@@ -97,10 +102,8 @@ void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
 	{
 		pos = (stream - DMA1_Stream0);
 		
-		dma = &dma1_clock_bits;
-		
-		(*dma) |= (1 << pos);
-		if (*dma)
+		dma_clock->dma1 |= (1 << pos);
+		if (dma_clock->dma1)
 		{
 			__DMA1_CLK_ENABLE();
 		}
@@ -119,10 +122,8 @@ void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
 	{
 		pos = (stream - DMA2_Stream0);
 		
-		dma = &dma2_clock_bits;
-		
-		(*dma) |= (1 << pos);
-		if (*dma)
+		(dma_clock->dma2) |= (1 << pos);
+		if (dma_clock->dma2)
 		{
 			__DMA2_CLK_ENABLE();
 		}
@@ -131,9 +132,8 @@ void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
 	}
 }
 
-void DMA_Clock_Put(DMA_Stream_TypeDef* stream)
+void DMA_Clock_Put(DMA_Clock_TypeDef* dma_clock, DMA_Stream_TypeDef* stream)
 {
-	uint8_t* dma = 0;
 	int pos = 0;
 	
 	if (DMA1_Stream0 == stream ||
@@ -147,10 +147,8 @@ void DMA_Clock_Put(DMA_Stream_TypeDef* stream)
 	{
 		pos = (stream - DMA1_Stream0);
 		
-		dma = &dma1_clock_bits;
-		
-		(*dma) &= ~(1 << pos);
-		if (*dma == 0)
+		(dma_clock->dma1) &= ~(1 << pos);
+		if (dma_clock->dma1 == 0)
 		{
 			__DMA1_CLK_DISABLE();
 		}
@@ -169,10 +167,8 @@ void DMA_Clock_Put(DMA_Stream_TypeDef* stream)
 	{
 		pos = (stream - DMA2_Stream0);
 		
-		dma = &dma2_clock_bits;
-		
-		(*dma) &= ~(1 << pos);
-		if (*dma == 0)
+		(dma_clock->dma2) &= ~(1 << pos);
+		if (dma_clock->dma2 == 0)
 		{
 			__DMA2_CLK_DISABLE();
 		}
@@ -181,16 +177,16 @@ void DMA_Clock_Put(DMA_Stream_TypeDef* stream)
 	}	
 }
 
-void DMA_Clock_Status(uint8_t* dma1, uint8_t* dma2)
+void DMA_Clock_Status(DMA_Clock_TypeDef* dma_clock, uint8_t* dma1, uint8_t* dma2)
 {
 	if (dma1)
 	{
-		*dma1 = dma1_clock_bits;
+		*dma1 = dma_clock->dma1;
 	}
 	
 	if (dma2)
 	{
-		*dma2 = dma2_clock_bits;
+		*dma2 = dma_clock->dma2;
 	}
 }
 
