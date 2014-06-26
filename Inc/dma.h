@@ -50,7 +50,7 @@ typedef struct {
 	
 } DMA_Clock_TypeDef;
 
-extern DMA_Clock_TypeDef dma_clock;
+extern DMA_Clock_TypeDef DMA_Clock_Singleton;
 
 void MX_DMA_Init(void);
 	 

@@ -42,6 +42,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include <stdbool.h>
 #include "stm32f4xx_hal.h"
+#include "dma.h"
 	 
 typedef struct
 {
@@ -60,6 +61,8 @@ typedef struct
 	IRQ_ConfigTypeDef*		dmarx_irq_config;
 	IRQ_ConfigTypeDef*		dmatx_irq_config;
 	IRQ_ConfigTypeDef*		uart_irq_config;
+	
+	DMA_Clock_TypeDef*		dma_clock;
 	
 } UARTEX_HandleTypeDef;
 

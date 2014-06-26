@@ -36,7 +36,7 @@
 #include <stdbool.h>
 #include "dma.h"
 
-DMA_Clock_TypeDef dma_clock = {
+DMA_Clock_TypeDef DMA_Clock_Singleton = {
 	
 	.dma1 = 0,
 	.dma2 = 0,
@@ -63,7 +63,7 @@ DMA_Clock_TypeDef dma_clock = {
 void MX_DMA_Init(void) 
 {
   /* DMA controller clock enable */
-  __DMA1_CLK_ENABLE();
+  // __DMA1_CLK_ENABLE();
 }
 
 /******************************************************************************

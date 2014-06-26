@@ -342,7 +342,7 @@ TEST(Usart_DMA_MspInit, TxDMAIRQShouldBeEnabled)
 //}
 **/
 
-TEST(Usart_DMA_MspInit, IRQEnabled)
+TEST(Usart_DMA_MspInit, UARTIRQEnabled)
 {
 	HAL_NVIC_DisableIRQ(USART2_IRQn);
 	HAL_UART_MspInit(huart);
@@ -359,7 +359,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, TxDMAIRQShouldBeEnabled);
-	RUN_TEST_CASE(Usart_DMA_MspInit, IRQEnabled);
+	RUN_TEST_CASE(Usart_DMA_MspInit, UARTIRQEnabled);
 }
 
 /*****************************************************************************/

@@ -84,6 +84,9 @@ Goal: refactor generated code for usart initialization.
 
 51. try to eliminate globals and singleton, the key idea: dependency injection.
 	create new type, set new (extern) dma_clock object, update all functions and test cases. passed.
+52. dependency injection using designated initializer.
+	do we need new case? the HAL_DMA_Init won't work if clock not enabled. but actually this problem won't be caught by
+	HAL_DMA_Init code. It just set state to READY anyway. So we need the new case.
 
 Pending: 
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.
