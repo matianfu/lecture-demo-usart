@@ -200,16 +200,24 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 	if (huartex->huart.hdmatx)
 	{
 		HAL_DMA_Init(huartex->huart.hdmatx);
+		//	__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
+		assert_param(huartex->huart.hdmatx->Parent == &huartex->huart);
 	}
-//	__HAL_LINKDMA(huart,hdmatx,hdma_usart2_tx);
+	
+	if (huartex->dmatx_irq_config)
+	{
+		iconf = huartex->dmatx_irq_config;
+		HAL_NVIC_SetPriority(iconf->irqn, iconf->preempt_priority, iconf->sub_priority);
+		HAL_NVIC_EnableIRQ(iconf->irqn);
+	}
+
 
 	/* Peripheral interrupt init*/
 	if (huartex->uart_irq_config) 
 	{
-		HAL_NVIC_SetPriority(	huartex->uart_irq_config->irqn, 
-													huartex->uart_irq_config->preempt_priority,
-													huartex->uart_irq_config->sub_priority);					
-		HAL_NVIC_EnableIRQ(huartex->uart_irq_config->irqn);
+		iconf = huartex->uart_irq_config;
+		HAL_NVIC_SetPriority(iconf->irqn, iconf->preempt_priority, iconf->sub_priority);					
+		HAL_NVIC_EnableIRQ(iconf->irqn);
 	}
 }
 
