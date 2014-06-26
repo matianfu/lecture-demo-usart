@@ -82,6 +82,8 @@ Goal: refactor generated code for usart initialization.
 49. add getter function DMA_Clock_Status, add test case for status bit. test passed.
 50. add test case for status bit clear. test passed.
 
+
+
 Pending: 
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.
 2. we don't like the way dma globals are used in mspinit. not good for test.
