@@ -88,6 +88,9 @@ Goal: refactor generated code for usart initialization.
 	do we need new case? the HAL_DMA_Init won't work if clock not enabled. but actually this problem won't be caught by
 	HAL_DMA_Init code. It just set state to READY anyway. So we need the new case.
 53. add new case to ensure dma clock enabled after mspinit. oh, no, refactor dma status function first. function refactored and test passed.
+54. add new test to mspinit, ensure dma clock is enabled.
+55. add production code, test passed.
+
 
 Pending: 
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.

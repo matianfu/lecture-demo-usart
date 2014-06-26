@@ -188,9 +188,9 @@ void HAL_UART_MspInit(UART_HandleTypeDef* huart)
 	{
 		//	__HAL_LINKDMA(huart,hdmarx,hdma_usart2_rx);
 		assert_param(huartex->huart.hdmarx->Parent == &huartex->huart);
-		// assert_param(huartex->dma_clock);
+		assert_param(huartex->dma_clock);
 		
-		// DMA_Clock_Get(huartex->dma_clock, huartex->huart.hdmarx->Instance);
+		DMA_Clock_Get(huartex->dma_clock, huartex->huart.hdmarx->Instance);
 		HAL_DMA_Init(huartex->huart.hdmarx);
 	}
 	

@@ -279,10 +279,9 @@ TEST(Usart_DMA_MspInit, GpioShouldBeNonInput)
 	TEST_ASSERT_TRUE(gpio_modes_all_noninput(GPIOD, pins));
 }
 
-/**
+/** without this test, the HAL_DMA_Init function succeed anyway even if clock not enabled. **/
 TEST(Usart_DMA_MspInit, RxDMAClockBitShouldBeSet)
 {
-	uint8_t dmabits;
 	DMA_Clock_TypeDef dma_clock, *original;
 	memset(&dma_clock, 0, sizeof(dma_clock));
 	
@@ -291,10 +290,11 @@ TEST(Usart_DMA_MspInit, RxDMAClockBitShouldBeSet)
 	
 	HAL_UART_MspInit(&huartex2.huart);
 	
-	DMA_Clock_Status(&dma_clock, &dmabits, 0);
-	// TEST_ASSERT_TRUE(dmabits & (1 << huartex2.huart.hdmarx->
+	TEST_ASSERT_TRUE(DMA_Clock_Status(&dma_clock, huartex2.huart.hdmarx->Instance));
+
+	huartex2.dma_clock = original;
 }
-**/
+
 
 TEST(Usart_DMA_MspInit, RxDMAShouldBeInitialized)
 {
@@ -371,6 +371,7 @@ TEST_GROUP_RUNNER(Usart_DMA_MspInit)
 {
 	RUN_TEST_CASE(Usart_DMA_MspInit, UartClockShouldBeEnabled);
 	RUN_TEST_CASE(Usart_DMA_MspInit, GpioShouldBeNonInput);
+	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAClockBitShouldBeSet);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeInitialized);
 //	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAShouldBeLinked);
 	RUN_TEST_CASE(Usart_DMA_MspInit, RxDMAIRQShouldBeEnabled);

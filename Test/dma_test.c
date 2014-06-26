@@ -48,8 +48,6 @@ TEST_TEAR_DOWN(DMA_Clock)
 #define __DMA2_CLK_ENABLE()          (RCC->AHB1ENR |= (RCC_AHB1ENR_DMA2EN))
 ******************************************************************************/
 
-
-
 TEST(DMA_Clock, ClockOffTurnOneOnClockOn)
 {
 	// assume all clocks off.
