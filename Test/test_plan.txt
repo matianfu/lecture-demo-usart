@@ -73,6 +73,8 @@ Goal: refactor generated code for usart initialization.
 41. add dmatx irq enabling code in mspinit, passed. a little more refactor for uart irq enabling, test passed.
 42. remove dma irq enabling code in mx_dma_init();
 
+43. analyze and planning dma clock, OR-ing Switch Model, test plan. first test, compilation fail.
+
 
 Pending: 
 1. we don't like the local configuration struct hard coded inside mspinit. not flexible for test and user.

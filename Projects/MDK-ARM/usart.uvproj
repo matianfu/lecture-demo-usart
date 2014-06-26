@@ -549,6 +549,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Test\test_plan.txt</FilePath>
             </File>
+            <File>
+              <FileName>dma_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Test\dma_test.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
