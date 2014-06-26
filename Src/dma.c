@@ -33,7 +33,11 @@
   ******************************************************************************
   */
 /* Includes ------------------------------------------------------------------*/
+#include <stdbool.h>
 #include "dma.h"
+
+static uint8_t dma1_clock_bits = 0;
+static uint8_t dma2_clock_bits = 0;
 
 /* USER CODE BEGIN 0 */
 
@@ -56,9 +60,75 @@ void MX_DMA_Init(void)
   __DMA1_CLK_ENABLE();
 }
 
+/******************************************************************************
+#define DMA1                ((DMA_TypeDef *) DMA1_BASE)
+#define DMA1_Stream0        ((DMA_Stream_TypeDef *) DMA1_Stream0_BASE)
+#define DMA1_Stream1        ((DMA_Stream_TypeDef *) DMA1_Stream1_BASE)
+#define DMA1_Stream2        ((DMA_Stream_TypeDef *) DMA1_Stream2_BASE)
+#define DMA1_Stream3        ((DMA_Stream_TypeDef *) DMA1_Stream3_BASE)
+#define DMA1_Stream4        ((DMA_Stream_TypeDef *) DMA1_Stream4_BASE)
+#define DMA1_Stream5        ((DMA_Stream_TypeDef *) DMA1_Stream5_BASE)
+#define DMA1_Stream6        ((DMA_Stream_TypeDef *) DMA1_Stream6_BASE)
+#define DMA1_Stream7        ((DMA_Stream_TypeDef *) DMA1_Stream7_BASE)
+#define DMA2                ((DMA_TypeDef *) DMA2_BASE)
+#define DMA2_Stream0        ((DMA_Stream_TypeDef *) DMA2_Stream0_BASE)
+#define DMA2_Stream1        ((DMA_Stream_TypeDef *) DMA2_Stream1_BASE)
+#define DMA2_Stream2        ((DMA_Stream_TypeDef *) DMA2_Stream2_BASE)
+#define DMA2_Stream3        ((DMA_Stream_TypeDef *) DMA2_Stream3_BASE)
+#define DMA2_Stream4        ((DMA_Stream_TypeDef *) DMA2_Stream4_BASE)
+#define DMA2_Stream5        ((DMA_Stream_TypeDef *) DMA2_Stream5_BASE)
+#define DMA2_Stream6        ((DMA_Stream_TypeDef *) DMA2_Stream6_BASE)
+#define DMA2_Stream7        ((DMA_Stream_TypeDef *) DMA2_Stream7_BASE)
+******************************************************************************/
+
 void DMA_Clock_Get(DMA_Stream_TypeDef* stream)
 {
+	uint8_t* dma = 0;
+	int pos = 0;
 	
+	if (DMA1_Stream0 == stream ||
+			DMA1_Stream1 == stream ||
+			DMA1_Stream2 == stream ||
+			DMA1_Stream3 == stream ||
+			DMA1_Stream4 == stream ||
+			DMA1_Stream5 == stream ||
+			DMA1_Stream6 == stream ||
+			DMA1_Stream7 == stream)
+	{
+		pos = (stream - DMA1_Stream0) / 0x18;
+		
+		dma = &dma1_clock_bits;
+		
+		(*dma) |= (1 << pos);
+		if (*dma)
+		{
+			__DMA1_CLK_ENABLE();
+		}
+		
+		return;
+	}
+	
+	if (DMA2_Stream0 == stream ||
+			DMA2_Stream1 == stream ||
+			DMA2_Stream2 == stream ||
+			DMA2_Stream3 == stream ||
+			DMA2_Stream4 == stream ||
+			DMA2_Stream5 == stream ||
+			DMA2_Stream6 == stream ||
+			DMA2_Stream7 == stream)
+	{
+		pos = (stream - DMA2_Stream0) / 0x18;
+		
+		dma = &dma2_clock_bits;
+		
+		(*dma) |= (1 << pos);
+		if (*dma)
+		{
+			__DMA2_CLK_ENABLE();
+		}
+		
+		return;		
+	}
 }
 
 /* USER CODE BEGIN 2 */

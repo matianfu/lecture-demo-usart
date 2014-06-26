@@ -46,6 +46,7 @@ static void RunAllTests(void)
 {
 	RUN_TEST_GROUP(Usart_DMA);
 	RUN_TEST_GROUP(Usart_DMA_MspInit);
+	RUN_TEST_GROUP(DMA_Clock);
 }
 /* USER CODE END 0 */
 

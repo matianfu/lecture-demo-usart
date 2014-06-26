@@ -75,6 +75,8 @@ Goal: refactor generated code for usart initialization.
 
 43. analyze and planning dma clock, OR-ing Switch Model, test plan. first test, compilation fail.
 44. define the function, provide the skeleton, compilation ok.
+45. go back to test case. finished. dont forget to add the new test group to RunAllTests, test fail of course, :)
+46. add production code for clock get, test passed.
 
 
 Pending: 
