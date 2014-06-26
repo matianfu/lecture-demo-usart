@@ -71,6 +71,7 @@ Goal: refactor generated code for usart initialization.
 39. add dmarx irq enabling code in mspinit, bugged and fixed. test pass.
 40. add dmatx irq test. test fail.
 41. add dmatx irq enabling code in mspinit, passed. a little more refactor for uart irq enabling, test passed.
+42. remove dma irq enabling code in mx_dma_init();
 
 
 Pending: 
