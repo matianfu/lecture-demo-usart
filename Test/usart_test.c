@@ -4,6 +4,30 @@
 #include "unity_fixture.h"
 #include "usart.h"
 
+//	.gpiox = GPIOD,														// r
+//	.gpio_init = &gpio_init_usart2_pd5_pd6,		// r
+//	.huart = 																	// r/w, conf
+//	{
+//		.Instance = USART2,
+//		.Init = 
+//		{
+//			.BaudRate = 115200,
+//			.WordLength = UART_WORDLENGTH_8B,
+//			.StopBits = UART_STOPBITS_1,
+//			.Parity = UART_PARITY_NONE,
+//			.Mode = UART_MODE_TX_RX,
+//			.HwFlowCtl = UART_HWCONTROL_NONE,
+//			.OverSampling = UART_OVERSAMPLING_16,
+//		},
+//		.hdmatx = &usart2_tx_dma_handle,				//	r/w
+//		.hdmarx = &usart2_rx_dma_handle,				//	r/w
+//	},
+//	
+//	.dmarx_irq_config = &dmarx_irq_config,		//	r, conf
+//	.dmatx_irq_config = &dmatx_irq_config,		// 	r, conf
+//	.uart_irq_config = &uart2_irq_config,			// 	r, conf
+//	.dma_clock = &DMA_Clock_Singleton,				//	r
+
 /******************************************************************************
 
 IP Blocks
@@ -182,7 +206,6 @@ static UARTEX_HandleTypeDef huartex2_pd5_pd6 =
 			.OverSampling = UART_OVERSAMPLING_16,
 		},
 	},
-
 };
 
 static UARTEX_HandleTypeDef huartex2 = 
@@ -209,12 +232,10 @@ static UARTEX_HandleTypeDef huartex2 =
 	.dmarx_irq_config = &dmarx_irq_config,
 	.dmatx_irq_config = &dmatx_irq_config,
 	.uart_irq_config = &uart2_irq_config,
+	.dma_clock = &DMA_Clock_Singleton,
 };
 
 static UART_HandleTypeDef* huart = &huartex2.huart;
-
-
-
 
 bool gpio_modes_all_noninput(GPIO_TypeDef* gpiox, uint32_t pins)
 {
